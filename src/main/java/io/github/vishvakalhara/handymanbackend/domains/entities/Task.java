@@ -30,28 +30,35 @@ public class Task {
     @Column(nullable = false)
     private String image;
 
+    @Column(nullable = false)
     private Double maxPrice;
 
     private Boolean isEmergency;
 
     private Boolean isCompleted;
 
+    private Boolean isDeleted;
+
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id", nullable = false)
     private User creator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "associatedTask")
     private List<Bid> bids = new ArrayList<>();
 
+    @OneToMany(mappedBy = "task")
+    private List<Review> reviews = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         this.isCompleted = false;
+        this.isDeleted = false;
         this.createdAt = LocalDateTime.now();
     }
 }

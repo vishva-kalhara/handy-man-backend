@@ -1,0 +1,54 @@
+package io.github.vishvakalhara.handymanbackend.controllers;
+
+import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.GetOneTaskResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(path = "api/v1/tasks")
+@RequiredArgsConstructor
+public class TaskController {
+
+    @GetMapping
+    public ResponseEntity<List<GetOneTaskResponse>> getPendingTasks(){
+
+        // Must check for isDeleted = false
+
+        return ResponseEntity.ok(new ArrayList<>());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetOneTaskResponse> getOneTask(@PathVariable UUID id){
+
+        // Must check for isDeleted = false
+
+        return ResponseEntity.ok(new GetOneTaskResponse());
+    }
+
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<GetOneTaskResponse> uploadFile(
+            @RequestPart("image") MultipartFile file,
+            @RequestPart("title") String title,
+            @RequestPart("description") String description,
+            @RequestPart("maxPrice") String maxPrice,
+            @RequestPart("isEmergency") String isEmergency,
+            @RequestPart("category") String category)  {
+
+//        https://chatgpt.com/c/67ebb44a-7cec-8002-94dd-c78b3c5c10a3
+
+        return new ResponseEntity<>(new GetOneTaskResponse(), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOneTask(@PathVariable UUID id){
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

@@ -31,4 +31,20 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewed_to", nullable = false)
     private User reviewedTo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task task;
+
+    private Boolean isReviewed;
+
+    @PrePersist
+    protected void onCreate(){
+        this.isReviewed = false;
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.isReviewed = true;
+    }
 }

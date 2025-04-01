@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.domains.entities;
 
+import io.github.vishvakalhara.handymanbackend.domains.BidStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,21 +24,23 @@ public class Bid {
     private Double price;
 
     @Column(nullable = false)
-    private Boolean isAccepted;
+    @Enumerated(EnumType.STRING)
+    private BidStatus bidStatus;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id", nullable = false)
     private Task associatedTask;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bidder_id", nullable = false)
     private User bidder;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.bidStatus = BidStatus.PENDING;
     }
 }
