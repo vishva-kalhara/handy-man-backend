@@ -4,7 +4,6 @@ import io.github.vishvakalhara.handymanbackend.domains.dtos.categories.CategoryD
 import io.github.vishvakalhara.handymanbackend.domains.dtos.categories.CreateCategoryRequest;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
 import io.github.vishvakalhara.handymanbackend.mappers.CategoryMapper;
-import io.github.vishvakalhara.handymanbackend.repositories.CategoryRepo;
 import io.github.vishvakalhara.handymanbackend.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     private final CategoryMapper categoryMapper;
-    private final CategoryRepo categoryRepo;
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories (){

@@ -1,6 +1,7 @@
-package io.github.vishvakalhara.handymanbackend.security;
+package io.github.vishvakalhara.handymanbackend.config;
 
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
+import io.github.vishvakalhara.handymanbackend.security.JwtAuthenticationFilter;
 import io.github.vishvakalhara.handymanbackend.services.AuthService;
 import io.github.vishvakalhara.handymanbackend.services.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,7 +33,6 @@ public class SecurityConfig {
         return new UserServiceImpl(userRepo);
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 
@@ -41,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                         .anyRequest().authenticated()
                 ).csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
