@@ -2,6 +2,7 @@ package io.github.vishvakalhara.handymanbackend.controllers;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.MessageDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.SendMessageRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class MessageController {
 
     @PostMapping
-    public ResponseEntity<MessageDTO> sendMessage(@RequestBody SendMessageRequest requestBody){
+    public ResponseEntity<MessageDTO> sendMessage(@Valid @RequestBody SendMessageRequest requestBody){
 
         // Get sender's id using request scope
         return new ResponseEntity<>(new MessageDTO(), HttpStatus.CREATED);

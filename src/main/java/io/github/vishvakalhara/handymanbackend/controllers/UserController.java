@@ -27,10 +27,16 @@ public class UserController {
         return ResponseEntity.ok(new GetMeResponse());
     }
 
-    @PatchMapping(path = "/me", consumes = "multipart/form-data")
-    public ResponseEntity<GetMeResponse> updateMe(
-            @RequestPart("image") MultipartFile image,
-            @RequestPart("bio") String bio){
+    @PatchMapping(path = "/me")
+    public ResponseEntity<GetMeResponse> updateMe(@RequestPart("bio") String bio){
+
+        // Get UUID from request scope
+        return ResponseEntity.ok(new GetMeResponse());
+    }
+
+    @PatchMapping(path = "/my-img", consumes = "multipart/form-data")
+    public ResponseEntity<GetMeResponse> updateMyImage(
+            @RequestPart("image") MultipartFile image){
 
         // Get UUID from request scope
         return ResponseEntity.ok(new GetMeResponse());

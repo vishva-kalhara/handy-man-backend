@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.domains.entities;
 
+import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +36,11 @@ public class Task {
 
     private Boolean isEmergency;
 
-    private Boolean isCompleted;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TaskStatus taskStatus;
+
+//    private Boolean isCompleted;
 
     private Boolean isDeleted;
 
@@ -57,7 +62,7 @@ public class Task {
 
     @PrePersist
     protected void onCreate() {
-        this.isCompleted = false;
+        this.taskStatus = TaskStatus.PENDING;
         this.isDeleted = false;
         this.createdAt = LocalDateTime.now();
     }

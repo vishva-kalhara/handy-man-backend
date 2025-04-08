@@ -1,12 +1,16 @@
 package io.github.vishvakalhara.handymanbackend.domains.dtos.user;
 
-import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.TaskDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GetMeResponse extends GetUserResponse {
+    private String displayName;
     private String email;
-    private List<Task> tasks = new ArrayList<>();
+    private String bio;
+    private String profileImage;
+    private Double avgRating;
+    private List<TaskDTO> tasks = new ArrayList<>();
 
 }

@@ -24,11 +24,12 @@ public class BidController {
         return new ResponseEntity<>(new BidDTO(), HttpStatus.CREATED);
     }
 
-    @GetMapping("/byTask/{taskId}")
-    public ResponseEntity<List<BidDTO>> getBidsOfATask(@PathVariable UUID taskId){
-
-        return ResponseEntity.ok(new ArrayList<>());
-    }
+//    @Deprecated
+//    @GetMapping("/byTask/{taskId}")
+//    public ResponseEntity<List<BidDTO>> getBidsOfATask(@PathVariable UUID taskId){
+//
+//        return ResponseEntity.ok(new ArrayList<>());
+//    }
 
     @PatchMapping("/{bidId}")
     public ResponseEntity<BidDTO> updateBidStatus(

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class GetOneReviewResponse {
+public class ReviewDTO {
     private UUID id;
     private Double ratedValue;
     private String reviewText;
