@@ -17,7 +17,7 @@ public class UserDTO {
     private String email;
     private String bio;
     private Double avgRating;
-    private List<Review> reviewsIGot;
-    private List<TaskDTO> tasks = new ArrayList<>();
+//    private List<Review> reviewsIGot = new ArrayList<>();
+//    private List<TaskDTO> tasks = new ArrayList<>();
 
 }

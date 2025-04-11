@@ -16,24 +16,24 @@ public interface UserMapper {
 
     User registerRequestToEntity(RegisterRequest request);
 
-    @Mapping(target = "avgRating", source = "reviewsIGot", qualifiedByName = "calculateAvgRating")
+//    @Mapping(target = "avgRating", source = "reviewsIGot", qualifiedByName = "calculateAvgRating")
     UserDTO entityToGetMe(User user);
 
-    @Named("calculateAvgRating")
-    default Double calculateAvgRating(List<Review> reviewsIGot){
-
-        if(reviewsIGot == null || reviewsIGot.isEmpty()){
-            return null;
-        }
-
-        double ratingTotal = 0.0;
-        int reviewCount = 0;
-
-        for(Review review : reviewsIGot){
-            ratingTotal += review.getRatedValue();
-            reviewCount++;
-        }
-
-        return ratingTotal / reviewCount;
-    }
+//    @Named("calculateAvgRating")
+//    default Double calculateAvgRating(List<Review> reviewsIGot){
+//
+//        if(reviewsIGot == null || reviewsIGot.isEmpty()){
+//            return null;
+//        }
+//
+//        double ratingTotal = 0.0;
+//        int reviewCount = 0;
+//
+//        for(Review review : reviewsIGot){
+//            ratingTotal += review.getRatedValue();
+//            reviewCount++;
+//        }
+//
+//        return ratingTotal / reviewCount;
+//    }
 }
