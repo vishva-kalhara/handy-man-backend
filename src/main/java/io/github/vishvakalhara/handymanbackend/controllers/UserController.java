@@ -1,7 +1,9 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
-import io.github.vishvakalhara.handymanbackend.domains.dtos.user.GetMeResponse;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.user.GetUserResponse;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.user.UserDTO;
+import io.github.vishvakalhara.handymanbackend.domains.entities.User;
+import io.github.vishvakalhara.handymanbackend.mappers.UserMapper;
+import io.github.vishvakalhara.handymanbackend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,31 +16,35 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GetUserResponse> getOneUser(@PathVariable UUID id){
+    private final UserService userService;
 
-        return ResponseEntity.ok(new GetUserResponse());
+    private final UserMapper userMapper;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getOneUser(@PathVariable UUID id){
+
+        return ResponseEntity.ok(new UserDTO());
     }
 
     @GetMapping("/me")
-    public ResponseEntity<GetMeResponse> getMe(){
+    public ResponseEntity<UserDTO> getMe(@RequestAttribute UUID userId){
 
-        // Get UUID from request scope
-        return ResponseEntity.ok(new GetMeResponse());
+        User user = userService.getOneUser(userId);
+        return ResponseEntity.ok(userMapper.entityToGetMe(user));
     }
 
     @PatchMapping(path = "/me")
-    public ResponseEntity<GetMeResponse> updateMe(@RequestPart("bio") String bio){
+    public ResponseEntity<UserDTO> updateMe(@RequestPart("bio") String bio){
 
         // Get UUID from request scope
-        return ResponseEntity.ok(new GetMeResponse());
+        return ResponseEntity.ok(new UserDTO());
     }
 
     @PatchMapping(path = "/my-img", consumes = "multipart/form-data")
-    public ResponseEntity<GetMeResponse> updateMyImage(
+    public ResponseEntity<UserDTO> updateMyImage(
             @RequestPart("image") MultipartFile image){
 
         // Get UUID from request scope
-        return ResponseEntity.ok(new GetMeResponse());
+        return ResponseEntity.ok(new UserDTO());
     }
 }

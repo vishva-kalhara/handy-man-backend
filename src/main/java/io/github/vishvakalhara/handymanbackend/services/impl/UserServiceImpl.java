@@ -6,6 +6,7 @@ import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.security.UserPrincipal;
 import io.github.vishvakalhara.handymanbackend.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User getOneUser(UUID id) {
-        return null;
+        return userRepo.findById(id).orElseThrow(() -> new AppException("No User found!", HttpStatus.NOT_FOUND));
     }
 
     @Override

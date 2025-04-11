@@ -28,10 +28,10 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter(authService);
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(UserRepo userRepo){
-        return new UserServiceImpl(userRepo);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(UserRepo userRepo){
+//        return new UserServiceImpl(userRepo);
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
