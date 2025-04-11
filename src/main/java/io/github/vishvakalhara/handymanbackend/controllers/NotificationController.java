@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
+import io.github.vishvakalhara.handymanbackend.domains.dtos.notifications.NotificationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,6 @@ public class NotificationController {
 
 //        Must be Authenticated
 
-
+        return null;
     }
 }
