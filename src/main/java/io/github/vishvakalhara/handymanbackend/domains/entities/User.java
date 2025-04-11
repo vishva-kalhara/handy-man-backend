@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.domains.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,6 +54,7 @@ public class User {
     private Integer totalReviewsCount;
 
     @OneToMany(mappedBy = "creator")
+    @JsonIgnore
     private List<Task> tasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "bidder")

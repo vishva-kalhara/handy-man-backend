@@ -1,9 +1,21 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
+import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.CreateTaskRequest;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.TaskDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.UpdateTaskRequest;
+import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
+import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
+import io.github.vishvakalhara.handymanbackend.domains.entities.User;
+import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
+import io.github.vishvakalhara.handymanbackend.mappers.TaskMapper;
+import io.github.vishvakalhara.handymanbackend.repositories.CategoryRepo;
+import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
+import io.github.vishvakalhara.handymanbackend.services.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,8 +29,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TaskController {
 
+    private final TaskService taskService;
+    private final TaskMapper taskMapper;
+
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> getAllTasks(){
+    public ResponseEntity<List<TaskDTO>> getAllTasks() {
 
 //        Path Variables: isDeleted, isCompleted, etc.
 
@@ -26,38 +41,45 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDTO> getOneTask(@PathVariable UUID id){
+    public ResponseEntity<TaskDTO> getOneTask(@PathVariable UUID id) {
 
         // Must check for isDeleted = false
 
         return ResponseEntity.ok(new TaskDTO());
     }
 
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping(consumes =  {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
     public ResponseEntity<TaskDTO> uploadFile(
             @RequestPart("image") MultipartFile file,
-            @RequestPart("title") String title,
-            @RequestPart("description") String description,
-            @RequestPart("maxPrice") String maxPrice,
-            @RequestPart("isEmergency") String isEmergency,
-            @RequestPart("category") String category)  {
+            @RequestPart("data") CreateTaskRequest data,
+            @RequestAttribute UUID userId
+    ) {
 
-//        https://chatgpt.com/c/67ebb44a-7cec-8002-94dd-c78b3c5c10a3
+        @Valid
+        CreateTaskRequest requestData = CreateTaskRequest.builder()
+                .image(file)
+                .title(data.getTitle())
+                .description(data.getDescription())
+                .maxPrice(data.getMaxPrice())
+                .categoryId(data.getCategoryId())
+                .isEmergency(data.getIsEmergency())
+                .creatorId(userId)
+                .build();
 
-        return new ResponseEntity<>(new TaskDTO(), HttpStatus.CREATED);
+        Task task = taskService.createTask(requestData);
+        return new ResponseEntity<>(taskMapper.entityToDTO(task), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOneTask(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteOneTask(@PathVariable UUID id) {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<TaskDTO> updateOneTask(@PathVariable UUID id, @RequestBody UpdateTaskRequest requestBody){
+    public ResponseEntity<TaskDTO> updateOneTask(@PathVariable UUID id, @RequestBody UpdateTaskRequest requestBody) {
 
 //        When owner mark the task as completed must create two dummy review spots automatically.
-
 
 
         return ResponseEntity.ok(null);

@@ -10,7 +10,7 @@
 			"name": "Categories",
 			"item": [
 				{
-					"name": "Get All Categories",a
+					"name": "Get All Categories",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -63,12 +63,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/categories",
+							"raw": "{{URL}}/categories/",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"categories"
+								"categories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seed Categories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/categories/seed",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"categories",
+								"seed"
 							]
 						}
 					},
@@ -162,6 +181,183 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/D:/me/62551668.jpg"
+								},
+								{
+									"key": "data",
+									"value": "{\"title\":\"Redo the kitchen104\",\"description\":\"Redo the kitchen with new tiles and paint\",\"maxPrice\":10000,\"isEmergency\":true,\"categoryId\":\"38b90c1c-fb65-4a94-b561-8b96a325fbff\"}",
+									"contentType": "application/json",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/tasks",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/D:/me/62551668.jpg"
+										},
+										{
+											"key": "data",
+											"value": "{\"title\":\"Redo the kitchen104\",\"description\":\"Redo the kitchen with new tiles and paint\",\"maxPrice\":10000,\"isEmergency\":true,\"categoryId\":\"38b90c1c-fb65-4a94-b561-8b96a325fbff\"}",
+											"contentType": "application/json",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{URL}}/tasks",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"tasks"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 11 Apr 2025 12:52:16 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"aaf7a311-372b-42bd-aceb-ca082ae677c8\",\n    \"title\": \"Redo the kitchen104\",\n    \"description\": \"Redo the kitchen with new tiles and paint\",\n    \"image\": \"Hardcoded file path\",\n    \"maxPrice\": 10000,\n    \"isEmergency\": true,\n    \"taskStatus\": \"PENDING\",\n    \"createdAt\": \"2025-04-11T18:22:16.2167191\",\n    \"creator\": {\n        \"id\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\n        \"displayName\": null,\n        \"email\": null,\n        \"password\": null,\n        \"tempCode\": null,\n        \"profileImage\": null,\n        \"bio\": null,\n        \"createdAt\": null,\n        \"updatedAt\": null,\n        \"totalReviewsValue\": null,\n        \"totalReviewsCount\": null,\n        \"bids\": [],\n        \"sentMessages\": null,\n        \"receivedMessages\": null,\n        \"reviewsIDid\": null,\n        \"reviewsIGot\": null,\n        \"active\": false\n    },\n    \"category\": {\n        \"id\": \"38b90c1c-fb65-4a94-b561-8b96a325fbff\",\n        \"categoryName\": \"Painting\"\n    },\n    \"bids\": []\n}"
+						}
+					]
 				}
 			]
 		}

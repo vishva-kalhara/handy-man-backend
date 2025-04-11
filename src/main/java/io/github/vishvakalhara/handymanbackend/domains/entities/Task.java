@@ -1,8 +1,10 @@
 package io.github.vishvakalhara.handymanbackend.domains.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Task {
 
     @Id
@@ -48,10 +51,12 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
+    @JsonBackReference
     private User creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
     private Category category;
 
     @OneToMany(mappedBy = "associatedTask")
