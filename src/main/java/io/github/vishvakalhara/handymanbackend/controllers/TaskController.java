@@ -1,12 +1,10 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
-import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.CreateTaskRequest;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.TaskDTO;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.UpdateTaskRequest;
+import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.*;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
 import io.github.vishvakalhara.handymanbackend.mappers.TaskMapper;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,14 +21,34 @@ import java.util.UUID;
 public class TaskController {
 
     private final TaskService taskService;
+
     private final TaskMapper taskMapper;
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> getAllTasks() {
+    public ResponseEntity<List<SimpleTaskDTO>> getAllTasks(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Boolean isEmergency,
+            @RequestParam(required = false) UUID creatorId,
+            @RequestParam(required = false) TaskStatus taskStatus,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer page
+    ) {
 
-//        Path Variables: isDeleted, isCompleted, etc.
+        FilterTasksRequest queryData = FilterTasksRequest.builder()
+                .category(category)
+                .isEmergency(isEmergency)
+                .creatorId(creatorId)
+                .taskStatus(taskStatus)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .size(size == null ? 24 : size)
+                .page(page == null ? 0 : page - 1) // First Page
+                .build();
 
-        return ResponseEntity.ok(new ArrayList<>());
+        List<Task> tasks = taskService.getAllTasks(queryData);
+        return ResponseEntity.ok(taskMapper.entityToSimpleTaskDTO(tasks));
     }
 
     @GetMapping("/{id}")
@@ -69,12 +86,12 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<TaskDTO> updateOneTask(@PathVariable UUID id, @RequestBody UpdateTaskRequest requestBody) {
-
-//        When owner mark the task as completed must create two dummy review spots automatically.
-
-
-        return ResponseEntity.ok(null);
-    }
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<TaskDTO> updateOneTask(@PathVariable UUID id, @RequestBody UpdateTaskRequest requestBody) {
+//
+////        When owner mark the task as completed must create two dummy review spots automatically.
+//
+//
+//        return ResponseEntity.ok(null);
+//    }
 }

@@ -221,6 +221,185 @@
 			"name": "Tasks",
 			"item": [
 				{
+					"name": "Get All Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/tasks?isEmergency=false",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "isEmergency",
+									"value": "false"
+								},
+								{
+									"key": "creatorId",
+									"value": "7fd85ec0-0c28-4a70-a879-f6573037dfb3",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "Carpentry",
+									"disabled": true
+								},
+								{
+									"key": "taskStatus",
+									"value": "WAITING_TO_COMPLETE",
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": "70000",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "100000",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/tasks?isEmergency=false",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"tasks"
+									],
+									"query": [
+										{
+											"key": "isEmergency",
+											"value": "false"
+										},
+										{
+											"key": "creatorId",
+											"value": "7fd85ec0-0c28-4a70-a879-f6573037dfb3",
+											"disabled": true
+										},
+										{
+											"key": "category",
+											"value": "Carpentry",
+											"disabled": true
+										},
+										{
+											"key": "taskStatus",
+											"value": "WAITING_TO_COMPLETE",
+											"disabled": true
+										},
+										{
+											"key": "minPrice",
+											"value": "70000",
+											"disabled": true
+										},
+										{
+											"key": "maxPrice",
+											"value": "100000",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 12 Apr 2025 10:29:52 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"c8cdbd16-7c5f-42a3-bc9c-87ae375a92c6\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"6c592fa3-7fde-4f0d-9e48-475fd14c7f3f\",\n            \"displayName\": \"Test User\",\n            \"profileImage\": null,\n            \"avgRating\": null\n        },\n        \"title\": \"Outdoor socket installation\",\n        \"maxPrice\": 37500,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"bcaa62a4-7f12-4a71-a815-0be3f95c9574\",\n            \"categoryName\": \"Electrical Work\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:30:52.524317\"\n    },\n    {\n        \"id\": \"03aed90b-07d6-4fb5-a933-412515597995\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\n            \"displayName\": \"Test User\",\n            \"profileImage\": \"https://geediting.com/wp-content/uploads/2023/12/newimagesize-2023-04-02T192008.840.png\",\n            \"avgRating\": null\n        },\n        \"title\": \"Ceiling fan installation\",\n        \"maxPrice\": 45000,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"bcaa62a4-7f12-4a71-a815-0be3f95c9574\",\n            \"categoryName\": \"Electrical Work\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:27:06.542466\"\n    },\n    {\n        \"id\": \"cfd0d789-5316-4947-8ccd-15563b4a2372\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"7fd85ec0-0c28-4a70-a879-f6573037dfb3\",\n            \"displayName\": \"Wisjva\",\n            \"profileImage\": null,\n            \"avgRating\": null\n        },\n        \"title\": \"Wall-mounted jak desk\",\n        \"maxPrice\": 82500,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"c998b1a8-d41b-4860-940d-0f0836206f09\",\n            \"categoryName\": \"Carpentry\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:31:46.380992\"\n    },\n    {\n        \"id\": \"69f3aff3-5f48-40c5-92ec-d87e487982fc\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\n            \"displayName\": \"Test User\",\n            \"profileImage\": \"https://geediting.com/wp-content/uploads/2023/12/newimagesize-2023-04-02T192008.840.png\",\n            \"avgRating\": null\n        },\n        \"title\": \"Custom teak bookshelf\",\n        \"maxPrice\": 90000,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"c998b1a8-d41b-4860-940d-0f0836206f09\",\n            \"categoryName\": \"Carpentry\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:28:44.739013\"\n    },\n    {\n        \"id\": \"8842336b-8f3d-4932-8889-d91bfc80e7ab\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"7fd85ec0-0c28-4a70-a879-f6573037dfb3\",\n            \"displayName\": \"Wisjva\",\n            \"profileImage\": null,\n            \"avgRating\": null\n        },\n        \"title\": \"Paint interior doors\",\n        \"maxPrice\": 60000,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"38b90c1c-fb65-4a94-b561-8b96a325fbff\",\n            \"categoryName\": \"Painting\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:32:15.041481\"\n    },\n    {\n        \"id\": \"9950da73-ffd8-4d3e-91f2-6cf32fab80dd\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\n            \"displayName\": \"Test User\",\n            \"profileImage\": \"https://geediting.com/wp-content/uploads/2023/12/newimagesize-2023-04-02T192008.840.png\",\n            \"avgRating\": null\n        },\n        \"title\": \"Paint living room (Nippon Paint)\",\n        \"maxPrice\": 75000,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"38b90c1c-fb65-4a94-b561-8b96a325fbff\",\n            \"categoryName\": \"Painting\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:29:07.713702\"\n    },\n    {\n        \"id\": \"7d79e44d-804b-43b7-b5a3-c87ad0e672f6\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"7fd85ec0-0c28-4a70-a879-f6573037dfb3\",\n            \"displayName\": \"Wisjva\",\n            \"profileImage\": null,\n            \"avgRating\": null\n        },\n        \"title\": \"Drywall texture matching\",\n        \"maxPrice\": 27000,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"ccf83892-d3b9-4edb-bdff-05ec0bd920d5\",\n            \"categoryName\": \"Drywall Repair\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:32:36.552125\"\n    },\n    {\n        \"id\": \"f1839b75-60a4-431b-9c94-2bc435d06326\",\n        \"image\": \"https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg\",\n        \"creator\": {\n            \"id\": \"6c592fa3-7fde-4f0d-9e48-475fd14c7f3f\",\n            \"displayName\": \"Test User\",\n            \"profileImage\": null,\n            \"avgRating\": null\n        },\n        \"title\": \"Drywall repair - cabinet hole\",\n        \"maxPrice\": 52500,\n        \"isEmergency\": false,\n        \"category\": {\n            \"id\": \"ccf83892-d3b9-4edb-bdff-05ec0bd920d5\",\n            \"categoryName\": \"Drywall Repair\"\n        },\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-04-12T13:29:57.106479\"\n    }\n]"
+						}
+					]
+				},
+				{
 					"name": "Create Task",
 					"request": {
 						"auth": {

@@ -3,6 +3,7 @@ package io.github.vishvakalhara.handymanbackend.mappers;
 import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.BidDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.categories.CategoryDTO;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.SimpleTaskDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.TaskDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.user.OnlyUserId;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.user.SimpleUserDTO;
@@ -26,6 +27,10 @@ public interface TaskMapper {
     @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
     @Mapping(target = "bids", source = "bids", qualifiedByName = "mapTaskBids")
     TaskDTO entityToDTO(Task task);
+
+    @Mapping(target = "creator", source = "creator", qualifiedByName = "removeCreatorDetails")
+    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
+    List<SimpleTaskDTO> entityToSimpleTaskDTO(List<Task> tasks);
 
     @Named("removeCreatorDetails")
     default SimpleUserDTO removeCreatorDetails(User creator) {

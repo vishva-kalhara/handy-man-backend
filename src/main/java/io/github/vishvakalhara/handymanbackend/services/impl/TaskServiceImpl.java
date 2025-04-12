@@ -2,6 +2,7 @@ package io.github.vishvakalhara.handymanbackend.services.impl;
 
 import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.CreateTaskRequest;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.FilterTasksRequest;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
 import io.github.vishvakalhara.handymanbackend.domains.entities.User;
@@ -11,9 +12,11 @@ import io.github.vishvakalhara.handymanbackend.repositories.TaskRepo;
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,6 +28,20 @@ public class TaskServiceImpl implements TaskService {
     public final UserRepo userRepo;
 
     public final TaskRepo taskRepo;
+
+    @Override
+    public List<Task> getAllTasks(FilterTasksRequest queryParams) {
+
+        return taskRepo.filterTasks(
+                queryParams.getIsEmergency(),
+                queryParams.getCreatorId(),
+                queryParams.getCategory(),
+                queryParams.getTaskStatus(),
+                queryParams.getMinPrice(),
+                queryParams.getMaxPrice(),
+                PageRequest.of(queryParams.getPage(), queryParams.getSize())
+        );
+    }
 
     @Override
     public Task createTask(CreateTaskRequest data) {
