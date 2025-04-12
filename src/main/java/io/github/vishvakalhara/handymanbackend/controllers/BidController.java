@@ -21,7 +21,7 @@ public class BidController {
     public ResponseEntity<BidDTO> createBid(@RequestBody CreateBidRequest requestBody){
 
         // Get Bidder Id from request scope
-        return new ResponseEntity<>(new BidDTO(), HttpStatus.CREATED);
+        return new ResponseEntity<>(BidDTO.builder().build(), HttpStatus.CREATED);
     }
 
 //    @Deprecated
@@ -35,6 +35,6 @@ public class BidController {
     public ResponseEntity<BidDTO> updateBidStatus(
             @PathVariable UUID bidId, @RequestBody UpdateBidStatusRequest requestBody){
 
-        return ResponseEntity.ok(new BidDTO());
+        return ResponseEntity.ok(BidDTO.builder().build());
     }
 }
