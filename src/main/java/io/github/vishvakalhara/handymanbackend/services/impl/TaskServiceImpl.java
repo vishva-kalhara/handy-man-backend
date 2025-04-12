@@ -65,4 +65,18 @@ public class TaskServiceImpl implements TaskService {
 
         return task;
     }
+
+    @Override
+    public void deleteTask(UUID id) {
+
+        Task task = taskRepo.findById(id).orElseThrow(
+                () -> new AppException("Task is Not Found!", HttpStatus.NOT_FOUND)
+        );
+
+        if(task.getIsDeleted()){
+            throw new AppException("Task is Not Found!", HttpStatus.NOT_FOUND);
+        }
+
+        taskRepo.delete(task);
+    }
 }

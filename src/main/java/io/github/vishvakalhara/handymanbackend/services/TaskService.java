@@ -10,4 +10,6 @@ public interface TaskService {
     Task createTask(CreateTaskRequest data);
 
     Task getOneTask(UUID id);
+
+    void deleteTask(UUID id);
 }

@@ -365,13 +365,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/tasks/56a6c31c-587f-4312-8150-7c85d8c06dcb",
+							"raw": "{{URL}}/tasks/6c231760-c6b6-4a7d-a498-fd26234df973",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"tasks",
-								"56a6c31c-587f-4312-8150-7c85d8c06dcb"
+								"6c231760-c6b6-4a7d-a498-fd26234df973"
 							]
 						}
 					},
@@ -382,13 +382,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{URL}}/tasks/56a6c31c-587f-4312-8150-7c85d8c06dcb",
+									"raw": "{{URL}}/tasks/6c231760-c6b6-4a7d-a498-fd26234df973",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
 										"tasks",
-										"56a6c31c-587f-4312-8150-7c85d8c06dcb"
+										"6c231760-c6b6-4a7d-a498-fd26234df973"
 									]
 								}
 							},
@@ -442,7 +442,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 12 Apr 2025 04:36:52 GMT"
+									"value": "Sat, 12 Apr 2025 05:23:15 GMT"
 								},
 								{
 									"key": "Keep-Alive",
@@ -454,9 +454,37 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"id\": \"56a6c31c-587f-4312-8150-7c85d8c06dcb\",\n    \"title\": \"789\",\n    \"description\": \"123456789\",\n    \"image\": \"Hardcoded file path\",\n    \"maxPrice\": 2500,\n    \"isEmergency\": true,\n    \"taskStatus\": \"PENDING\",\n    \"createdAt\": \"2025-04-11T19:13:19.635811\",\n    \"creator\": {\n        \"id\": \"6c592fa3-7fde-4f0d-9e48-475fd14c7f3f\"\n    },\n    \"category\": {\n        \"id\": \"68f20fc1-22f3-484a-b027-cfc2d2323934\",\n        \"categoryName\": \"Landscaping\"\n    },\n    \"bids\": []\n}"
+							"body": "{\n    \"id\": \"6c231760-c6b6-4a7d-a498-fd26234df973\",\n    \"title\": \"Fix leaky faucet\",\n    \"description\": \"The kitchen sink faucet has developed a persistent leak that needs immediate attention. The issue has been causing water wastage and increasing the water bill. The task involves identifying the root cause of the leak, whether it's a worn-out washer, a damaged valve, or another issue, and repairing it effectively. The handyman should have experience in plumbing repairs and bring the necessary tools and replacement parts. This is an urgent task as the leak has been ongoing for a few days, and the homeowner is looking for a quick and reliable solution to restore the faucet to proper working condition.\",\n    \"image\": \"https://res.cloudinary.com/american-bath-group/image/upload/c_scale,q_100,w_1520/v1632382060/websites-product-info-and-content/swan/content/products/kitchen/kitchen-sinks/swan-featureproduct-kitchensinks5.jpg\",\n    \"maxPrice\": 5000,\n    \"isEmergency\": true,\n    \"taskStatus\": \"PENDING\",\n    \"createdAt\": \"2025-04-12T10:47:40.708666\",\n    \"creator\": {\n        \"id\": \"6c592fa3-7fde-4f0d-9e48-475fd14c7f3f\",\n        \"displayName\": \"Test User\",\n        \"profileImage\": null,\n        \"avgRating\": null\n    },\n    \"category\": {\n        \"id\": \"534e024e-1ea2-47bd-9b9c-1b5eabaebeee\",\n        \"categoryName\": \"Appliance Repair\"\n    },\n    \"bids\": null\n}"
 						}
 					]
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/tasks/6c231760-c6b6-4a7d-a498-fd26234df973",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"tasks",
+								"6c231760-c6b6-4a7d-a498-fd26234df973"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
