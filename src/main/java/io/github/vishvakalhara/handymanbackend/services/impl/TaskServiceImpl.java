@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -48,5 +50,19 @@ public class TaskServiceImpl implements TaskService {
                 .build();
 
         return taskRepo.save(taskToBeCreated);
+    }
+
+    @Override
+    public Task getOneTask(UUID id) {
+
+        Task task = taskRepo.findById(id).orElseThrow(
+                () -> new AppException("Task is Not Found!", HttpStatus.NOT_FOUND)
+        );
+
+        if(task.getIsDeleted()){
+            throw new AppException("Task is Not Found!", HttpStatus.NOT_FOUND);
+        }
+
+        return task;
     }
 }

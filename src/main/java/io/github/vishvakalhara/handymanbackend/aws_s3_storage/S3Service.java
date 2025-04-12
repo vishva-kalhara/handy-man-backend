@@ -8,6 +8,6 @@ public class S3Service {
 
 //        https://chatgpt.com/c/67ebb44a-7cec-8002-94dd-c78b3c5c10a3
 
-        return "Hardcoded file path";
+        return "https://media.designcafe.com/wp-content/uploads/2024/08/18064403/simple-wall-painting-ideas.jpg";
     }
 }

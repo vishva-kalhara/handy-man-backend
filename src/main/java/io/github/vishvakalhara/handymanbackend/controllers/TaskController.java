@@ -1,16 +1,10 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
-import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.CreateTaskRequest;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.TaskDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.UpdateTaskRequest;
-import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
-import io.github.vishvakalhara.handymanbackend.domains.entities.User;
-import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
 import io.github.vishvakalhara.handymanbackend.mappers.TaskMapper;
-import io.github.vishvakalhara.handymanbackend.repositories.CategoryRepo;
-import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +37,8 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<TaskDTO> getOneTask(@PathVariable UUID id) {
 
-        // Must check for isDeleted = false
-
-        return ResponseEntity.ok(new TaskDTO());
+        Task task = taskService.getOneTask(id);
+        return ResponseEntity.ok(taskMapper.entityToDTO(task));
     }
 
     @PostMapping(consumes =  {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
@@ -55,7 +48,6 @@ public class TaskController {
             @RequestAttribute UUID userId
     ) {
 
-        @Valid
         CreateTaskRequest requestData = CreateTaskRequest.builder()
                 .image(file)
                 .title(data.getTitle())

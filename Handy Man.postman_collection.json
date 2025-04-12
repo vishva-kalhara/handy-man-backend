@@ -358,6 +358,105 @@
 							"body": "{\n    \"id\": \"aaf7a311-372b-42bd-aceb-ca082ae677c8\",\n    \"title\": \"Redo the kitchen104\",\n    \"description\": \"Redo the kitchen with new tiles and paint\",\n    \"image\": \"Hardcoded file path\",\n    \"maxPrice\": 10000,\n    \"isEmergency\": true,\n    \"taskStatus\": \"PENDING\",\n    \"createdAt\": \"2025-04-11T18:22:16.2167191\",\n    \"creator\": {\n        \"id\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\n        \"displayName\": null,\n        \"email\": null,\n        \"password\": null,\n        \"tempCode\": null,\n        \"profileImage\": null,\n        \"bio\": null,\n        \"createdAt\": null,\n        \"updatedAt\": null,\n        \"totalReviewsValue\": null,\n        \"totalReviewsCount\": null,\n        \"bids\": [],\n        \"sentMessages\": null,\n        \"receivedMessages\": null,\n        \"reviewsIDid\": null,\n        \"reviewsIGot\": null,\n        \"active\": false\n    },\n    \"category\": {\n        \"id\": \"38b90c1c-fb65-4a94-b561-8b96a325fbff\",\n        \"categoryName\": \"Painting\"\n    },\n    \"bids\": []\n}"
 						}
 					]
+				},
+				{
+					"name": "Get One Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/tasks/56a6c31c-587f-4312-8150-7c85d8c06dcb",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"tasks",
+								"56a6c31c-587f-4312-8150-7c85d8c06dcb"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/tasks/56a6c31c-587f-4312-8150-7c85d8c06dcb",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"tasks",
+										"56a6c31c-587f-4312-8150-7c85d8c06dcb"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 12 Apr 2025 04:36:52 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"56a6c31c-587f-4312-8150-7c85d8c06dcb\",\n    \"title\": \"789\",\n    \"description\": \"123456789\",\n    \"image\": \"Hardcoded file path\",\n    \"maxPrice\": 2500,\n    \"isEmergency\": true,\n    \"taskStatus\": \"PENDING\",\n    \"createdAt\": \"2025-04-11T19:13:19.635811\",\n    \"creator\": {\n        \"id\": \"6c592fa3-7fde-4f0d-9e48-475fd14c7f3f\"\n    },\n    \"category\": {\n        \"id\": \"68f20fc1-22f3-484a-b027-cfc2d2323934\",\n        \"categoryName\": \"Landscaping\"\n    },\n    \"bids\": []\n}"
+						}
+					]
 				}
 			]
 		}
