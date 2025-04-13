@@ -2,7 +2,7 @@ package io.github.vishvakalhara.handymanbackend.controllers;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.BidDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.CreateBidRequest;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.UpdateBidStatusRequest;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.UpdateBidRequest;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Bid;
 import io.github.vishvakalhara.handymanbackend.mappers.BidMapper;
 import io.github.vishvakalhara.handymanbackend.services.BidService;
@@ -35,17 +35,14 @@ public class BidController {
         return new ResponseEntity<>(bidMapper.entityToDTO(createdBid), HttpStatus.CREATED);
     }
 
-//    @Deprecated
-//    @GetMapping("/byTask/{taskId}")
-//    public ResponseEntity<List<BidDTO>> getBidsOfATask(@PathVariable UUID taskId){
-//
-//        return ResponseEntity.ok(new ArrayList<>());
-//    }
-
     @PatchMapping("/{bidId}")
     public ResponseEntity<BidDTO> updateBidStatus(
-            @PathVariable UUID bidId, @RequestBody UpdateBidStatusRequest requestBody){
+            @PathVariable UUID bidId,
+            @Valid @RequestBody UpdateBidRequest requestBody,
+            @RequestAttribute UUID userId
+    ){
 
-        return ResponseEntity.ok(BidDTO.builder().build());
+        Bid bid = bidService.updateBidStatus(bidId, requestBody.getBidStatus(), userId);
+        return ResponseEntity.ok(bidMapper.entityToDTO(bid));
     }
 }

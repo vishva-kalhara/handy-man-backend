@@ -15,7 +15,7 @@ public class WebConfig  {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins("http://localhost:3000") // frontend URL
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PATCH", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true); // Only if using cookies or auth headers
             }
