@@ -57,6 +57,10 @@ public class User {
     @JsonIgnore
     private List<Task> tasks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "associatedUser")
+    @JsonIgnore
+    private List<Notification> notifications = new ArrayList<>();
+
     @OneToMany(mappedBy = "bidder")
     private List<Bid> bids = new ArrayList<>();
 

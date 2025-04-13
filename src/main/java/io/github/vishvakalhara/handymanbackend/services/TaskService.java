@@ -15,5 +15,7 @@ public interface TaskService {
 
     Task getOneTask(UUID id);
 
+    Task completeTask(UUID taskId, UUID creatorId);
+
     void deleteTask(UUID id);
 }

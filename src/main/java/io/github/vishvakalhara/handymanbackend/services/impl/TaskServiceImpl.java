@@ -1,21 +1,21 @@
 package io.github.vishvakalhara.handymanbackend.services.impl;
 
 import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
+import io.github.vishvakalhara.handymanbackend.domains.BidStatus;
+import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.CreateTaskRequest;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.FilterTasksRequest;
-import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
-import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
-import io.github.vishvakalhara.handymanbackend.domains.entities.User;
+import io.github.vishvakalhara.handymanbackend.domains.entities.*;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
-import io.github.vishvakalhara.handymanbackend.repositories.CategoryRepo;
-import io.github.vishvakalhara.handymanbackend.repositories.TaskRepo;
-import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
+import io.github.vishvakalhara.handymanbackend.repositories.*;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,11 +23,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
-    public final CategoryRepo categoryRepo;
+    private final CategoryRepo categoryRepo;
 
-    public final UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    public final TaskRepo taskRepo;
+    private final TaskRepo taskRepo;
+
+    private final NotificationRepo notificationRepo;
+
+    private final BidRepo bidRepo;
 
     @Override
     public List<Task> getAllTasks(FilterTasksRequest queryParams) {
@@ -77,11 +81,63 @@ public class TaskServiceImpl implements TaskService {
                 () -> new AppException("Task is Not Found!", HttpStatus.NOT_FOUND)
         );
 
-        if(task.getIsDeleted()){
+        if (task.getIsDeleted()) {
             throw new AppException("Task is Not Found!", HttpStatus.NOT_FOUND);
         }
 
         return task;
+    }
+
+    @Transactional
+    @Override
+    public Task completeTask(UUID taskId, UUID creatorId) {
+
+        Task task = taskRepo.findById(taskId).orElseThrow(
+                () -> new AppException("Task not found!", HttpStatus.NOT_FOUND)
+        );
+
+        if (task.getIsDeleted()) {
+            throw new AppException("Task not found!", HttpStatus.NOT_FOUND);
+        }
+
+        if (!userRepo.existsUserById(creatorId)) {
+            throw new AppException("User not found!", HttpStatus.NOT_FOUND);
+        }
+
+        if (!task.getCreator().getId().equals(creatorId)) {
+            throw new AppException("Only task owner can perform this action!", HttpStatus.FORBIDDEN);
+        }
+
+        task.setTaskStatus(TaskStatus.COMPLETED);
+
+        List<Notification> notifications = new ArrayList<>();
+
+        User acceptedBidder = bidRepo.findBidByAssociatedTask_IdAndBidStatus(
+                task.getId(),
+                BidStatus.ACCEPTED
+        ).getBidder();
+
+        // Notification for task owner
+        notifications.add(Notification.builder()
+                .message("Review your handyman!")
+                .href("/reviews/create?taskId=" + task.getId() + "&reviewedToId" + acceptedBidder.getId())
+                .btnText("Review now")
+                .associatedUser(task.getCreator())
+                .build()
+        );
+
+        // Notification for task owner
+        notifications.add(Notification.builder()
+                .message("Review the task owner!")
+                .href("/reviews/create?taskId=" + task.getId() + "&reviewedToId" + task.getCreator().getId())
+                .btnText("Review now")
+                .associatedUser(acceptedBidder)
+                .build()
+        );
+
+        notificationRepo.saveAll(notifications);
+
+        return taskRepo.save(task);
     }
 
     @Override
@@ -91,10 +147,11 @@ public class TaskServiceImpl implements TaskService {
                 () -> new AppException("Task is Not Found!", HttpStatus.NOT_FOUND)
         );
 
-        if(task.getIsDeleted()){
+        if (task.getIsDeleted()) {
             throw new AppException("Task is Not Found!", HttpStatus.NOT_FOUND);
         }
 
-        taskRepo.delete(task);
+        task.setIsDeleted(true);
+        taskRepo.save(task);
     }
 }

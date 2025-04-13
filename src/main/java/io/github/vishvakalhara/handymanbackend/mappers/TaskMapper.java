@@ -21,12 +21,15 @@ public interface TaskMapper {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "removeCreatorDetails")
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
     @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
-//    @Mapping(target = "bids", source = "bids", qualifiedByName = "mapTaskBids")
     TaskDTO entityToDTO(Task task);
 
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
     @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
     List<SimpleTaskDTO> entityToSimpleTaskDTO(List<Task> tasks);
+
+    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
+    @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
+    SimpleTaskDTO entityToSimpleTaskDTO(Task task);
 
     @Named("removeCreatorDetails")
     default SimpleUserDTO removeCreatorDetails(User creator) {
@@ -58,25 +61,4 @@ public interface TaskMapper {
 
         return taskStatus.name();
     }
-
-//    @Named("mapTaskBids")
-//    default List<BidDTO> mapTaskBids(List<Bid> bids) {
-//
-//        if(bids == null || bids.isEmpty())
-//            return null;
-//
-//        List<BidDTO> bidDTOs = new ArrayList<>();
-//
-//        for (Bid bid : bids) {
-//            bidDTOs.add(BidDTO.builder()
-//                    .id(bid.getId())
-//                    .price(bid.getPrice())
-//                    .bidStatus(bid.getBidStatus().name())
-//                    .createdAt(bid.getCreatedAt())
-//                    .bidder(new OnlyUserId(bid.getBidder().getId()))
-//                    .build());
-//        }
-//
-//        return bidDTOs;
-//    }
 }

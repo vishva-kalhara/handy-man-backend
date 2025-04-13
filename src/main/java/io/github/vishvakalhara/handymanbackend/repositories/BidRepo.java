@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface BidRepo extends JpaRepository<Bid, UUID> {
 
     List<Bid> findBidsByBidStatusAndAssociatedTask_Id(BidStatus bidStatus, UUID associatedTaskId);
+
+    Bid findBidByAssociatedTask_IdAndBidStatus(UUID associatedTaskId, BidStatus bidStatus);
 }

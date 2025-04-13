@@ -96,12 +96,13 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<TaskDTO> updateOneTask(@PathVariable UUID id, @RequestBody UpdateTaskRequest requestBody) {
-//
-////        When owner mark the task as completed must create two dummy review spots automatically.
-//
-//
-//        return ResponseEntity.ok(null);
-//    }
+    @PatchMapping("/{taskId}/complete")
+    public ResponseEntity<SimpleTaskDTO> updateOneTask(
+            @PathVariable UUID taskId,
+            @RequestAttribute UUID userId
+    ) {
+
+        Task updatedTask = taskService.completeTask(taskId, userId);
+        return ResponseEntity.ok(taskMapper.entityToSimpleTaskDTO(updatedTask));
+    }
 }
