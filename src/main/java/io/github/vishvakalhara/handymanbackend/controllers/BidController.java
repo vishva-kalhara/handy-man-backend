@@ -3,13 +3,15 @@ package io.github.vishvakalhara.handymanbackend.controllers;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.BidDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.CreateBidRequest;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.UpdateBidStatusRequest;
+import io.github.vishvakalhara.handymanbackend.domains.entities.Bid;
+import io.github.vishvakalhara.handymanbackend.mappers.BidMapper;
+import io.github.vishvakalhara.handymanbackend.services.BidService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,11 +19,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BidController {
 
-    @PostMapping
-    public ResponseEntity<BidDTO> createBid(@RequestBody CreateBidRequest requestBody){
+    private final BidService bidService;
 
-        // Get Bidder Id from request scope
-        return new ResponseEntity<>(BidDTO.builder().build(), HttpStatus.CREATED);
+    private final BidMapper bidMapper;
+
+    @PostMapping
+    public ResponseEntity<BidDTO> createBid(
+            @Valid @RequestBody CreateBidRequest requestBody,
+            @RequestAttribute UUID userId
+    ){
+
+        requestBody.setBidderId(userId);
+        Bid createdBid = bidService.createBid(requestBody);
+
+        return new ResponseEntity<>(bidMapper.entityToDTO(createdBid), HttpStatus.CREATED);
     }
 
 //    @Deprecated

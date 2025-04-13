@@ -226,7 +226,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/tasks?isEmergency=false",
+							"raw": "{{URL}}/tasks",
 							"host": [
 								"{{URL}}"
 							],
@@ -236,7 +236,8 @@
 							"query": [
 								{
 									"key": "isEmergency",
-									"value": "false"
+									"value": "true",
+									"disabled": true
 								},
 								{
 									"key": "creatorId",
@@ -272,6 +273,11 @@
 									"key": "page",
 									"value": "1",
 									"disabled": true
+								},
+								{
+									"key": "isDeleted",
+									"value": "true",
+									"disabled": true
 								}
 							]
 						}
@@ -283,7 +289,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{URL}}/tasks?isEmergency=false",
+									"raw": "{{URL}}/tasks",
 									"host": [
 										"{{URL}}"
 									],
@@ -293,7 +299,8 @@
 									"query": [
 										{
 											"key": "isEmergency",
-											"value": "false"
+											"value": "false",
+											"disabled": true
 										},
 										{
 											"key": "creatorId",
@@ -664,6 +671,136 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bids",
+			"item": [
+				{
+					"name": "Bid for a Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 1200,\r\n    \"taskId\": \"69f3aff3-5f48-40c5-92ec-d87e487982fc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bids",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bids"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"price\": 1200,\r\n    \"taskId\": \"69f3aff3-5f48-40c5-92ec-d87e487982fc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/bids",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"bids"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 13 Apr 2025 04:51:51 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"13284842-d28d-456b-810d-2282434cbe9e\",\n    \"price\": 1200,\n    \"bidStatus\": \"PENDING\",\n    \"createdAt\": \"2025-04-13T10:21:51.4995213\",\n    \"bidder\": {\n        \"id\": \"7fd85ec0-0c28-4a70-a879-f6573037dfb3\",\n        \"displayName\": \"Wisjva\",\n        \"profileImage\": null,\n        \"avgRating\": null\n    }\n}"
+						}
+					]
 				}
 			]
 		}

@@ -1,6 +1,7 @@
 package io.github.vishvakalhara.handymanbackend.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -60,9 +61,11 @@ public class Task {
     private Category category;
 
     @OneToMany(mappedBy = "associatedTask")
+    @JsonIgnore
     private List<Bid> bids = new ArrayList<>();
 
     @OneToMany(mappedBy = "task")
+    @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
     @PrePersist
