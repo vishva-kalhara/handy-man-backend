@@ -39,7 +39,8 @@ public class TaskServiceImpl implements TaskService {
                 queryParams.getTaskStatus(),
                 queryParams.getMinPrice(),
                 queryParams.getMaxPrice(),
-                PageRequest.of(queryParams.getPage(), queryParams.getSize())
+                queryParams.getIsDeleted(),
+                PageRequest.of(queryParams.getPage(), queryParams.getSize(), queryParams.getSort())
         );
     }
 

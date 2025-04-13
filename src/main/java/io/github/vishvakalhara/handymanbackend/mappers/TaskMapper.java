@@ -28,8 +28,8 @@ public interface TaskMapper {
     @Mapping(target = "bids", source = "bids", qualifiedByName = "mapTaskBids")
     TaskDTO entityToDTO(Task task);
 
-    @Mapping(target = "creator", source = "creator", qualifiedByName = "removeCreatorDetails")
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
+    @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
     List<SimpleTaskDTO> entityToSimpleTaskDTO(List<Task> tasks);
 
     @Named("removeCreatorDetails")

@@ -16,6 +16,7 @@ public interface TaskRepo extends JpaRepository<Task, UUID> {
 
     @Query("SELECT t from Task t " +
             "WHERE (:isEmergency IS NULL OR t.isEmergency = :isEmergency)" +
+            "AND (:isDeleted IS NULL OR t.isDeleted = :isDeleted)" +
             "AND (:creatorId IS NULL OR t.creator.id = :creatorId)" +
             "AND (:categoryName IS NULL OR t.category.categoryName = :categoryName)" +
             "AND (:taskStatus IS NULL OR t.taskStatus = :taskStatus)" +
@@ -29,6 +30,7 @@ public interface TaskRepo extends JpaRepository<Task, UUID> {
             @Param("taskStatus") TaskStatus taskStatus,
             @Param("minPrice") Double minPrice,
             @Param("maxPrice") Double maxPrice,
+            @Param("isDeleted") Boolean isDeleted,
             Pageable pageable
     );
 }

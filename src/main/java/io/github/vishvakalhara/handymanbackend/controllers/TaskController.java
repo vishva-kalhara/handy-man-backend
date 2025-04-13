@@ -6,6 +6,7 @@ import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
 import io.github.vishvakalhara.handymanbackend.mappers.TaskMapper;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,16 @@ public class TaskController {
             @RequestParam(required = false) TaskStatus taskStatus,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Boolean isDeleted,
             @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) Integer page
+            @RequestParam(required = false) Integer page,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir
     ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
 
         FilterTasksRequest queryData = FilterTasksRequest.builder()
                 .category(category)
@@ -43,8 +51,10 @@ public class TaskController {
                 .taskStatus(taskStatus)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
+                .isDeleted(isDeleted)
                 .size(size == null ? 24 : size)
                 .page(page == null ? 0 : page - 1) // First Page
+                .sort(sort)
                 .build();
 
         List<Task> tasks = taskService.getAllTasks(queryData);
