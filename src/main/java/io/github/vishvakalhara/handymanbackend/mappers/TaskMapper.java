@@ -1,10 +1,12 @@
 package io.github.vishvakalhara.handymanbackend.mappers;
 
+import io.github.vishvakalhara.handymanbackend.domains.BidStatus;
 import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.categories.CategoryDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.SimpleTaskDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.TaskDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.user.SimpleUserDTO;
+import io.github.vishvakalhara.handymanbackend.domains.entities.Bid;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
 import io.github.vishvakalhara.handymanbackend.domains.entities.User;
@@ -21,6 +23,7 @@ public interface TaskMapper {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "removeCreatorDetails")
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
     @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
+    @Mapping(target = "chosenBidder", source = "bids", qualifiedByName = "mapChosenBidder")
     TaskDTO entityToDTO(Task task);
 
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
@@ -30,6 +33,21 @@ public interface TaskMapper {
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
     @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
     SimpleTaskDTO entityToSimpleTaskDTO(Task task);
+
+    @Named("mapChosenBidder")
+    default SimpleUserDTO mapChosenBidder(List<Bid> bids){
+
+        if(bids == null || bids.isEmpty())
+            return null;
+
+        for(Bid bid: bids) {
+            if(bid.getBidStatus() == BidStatus.ACCEPTED){
+                return removeCreatorDetails(bid.getBidder());
+            }
+        }
+
+        return null;
+    }
 
     @Named("removeCreatorDetails")
     default SimpleUserDTO removeCreatorDetails(User creator) {
