@@ -2,6 +2,7 @@ package io.github.vishvakalhara.handymanbackend.domains.dtos.tasks;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.bids.BidDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.categories.CategoryDTO;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.ReviewDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.user.SimpleUserDTO;
 import lombok.Data;
 
@@ -25,4 +26,5 @@ public class TaskDTO {
     private SimpleUserDTO chosenBidder;
     private CategoryDTO category;
     private List<BidDTO> bids = new ArrayList<>();
+    private List<ReviewDTO> reviews = new ArrayList<>();
 }
