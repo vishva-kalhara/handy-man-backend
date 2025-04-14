@@ -1,8 +1,12 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.ReviewDTO;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.UpdateReviewRequest;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.CreateReviewRequest;
+import io.github.vishvakalhara.handymanbackend.domains.entities.Review;
+import io.github.vishvakalhara.handymanbackend.services.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,15 +19,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    /*
-    1. The system creates the review
-    2. User has to provide rating and review text and modify it
-     */
-    @PostMapping
-    public ResponseEntity<ReviewDTO> updateReview(
-            @PathVariable UUID reviewId, @RequestBody UpdateReviewRequest requestBody){
+    private final ReviewService reviewService;
 
-        return ResponseEntity.ok(new ReviewDTO());
+    @PostMapping
+    public ResponseEntity<Review> updateReview(
+            @RequestAttribute UUID userId,
+            @Valid @RequestBody CreateReviewRequest requestBody
+    ){
+
+        Review review = reviewService.createReview(requestBody, userId);
+        return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @GetMapping("/me")

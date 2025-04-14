@@ -71,9 +71,11 @@ public class User {
     private List<Message> receivedMessages;
 
     @OneToMany(mappedBy = "reviewedBy")
+    @JsonIgnore
     private List<Review> reviewsIDid;
 
     @OneToMany(mappedBy = "reviewedTo")
+    @JsonIgnore
     private List<Review> reviewsIGot;
 
     @PrePersist

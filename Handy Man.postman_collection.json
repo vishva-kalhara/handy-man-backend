@@ -120,7 +120,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"text@example.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"email\": \"vishva@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -551,13 +551,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/tasks/6c231760-c6b6-4a7d-a498-fd26234df973",
+							"raw": "{{URL}}/tasks/7d79e44d-804b-43b7-b5a3-c87ad0e672f6",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"tasks",
-								"6c231760-c6b6-4a7d-a498-fd26234df973"
+								"7d79e44d-804b-43b7-b5a3-c87ad0e672f6"
 							]
 						}
 					},
@@ -667,6 +667,35 @@
 							"path": [
 								"tasks",
 								"6c231760-c6b6-4a7d-a498-fd26234df973"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete a task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/tasks/e25d2fd7-4046-4b41-9d32-b5163528fa0c/complete",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"tasks",
+								"e25d2fd7-4046-4b41-9d32-b5163528fa0c",
+								"complete"
 							]
 						}
 					},
@@ -928,6 +957,47 @@
 							"body": "{\n    \"id\": \"35e2ad26-2d6d-4239-974a-1ed04bdf0f27\",\n    \"price\": 50000,\n    \"bidStatus\": \"REJECTED\",\n    \"createdAt\": \"2025-04-13T11:21:47.544538\",\n    \"bidder\": {\n        \"id\": \"7fd85ec0-0c28-4a70-a879-f6573037dfb3\",\n        \"displayName\": \"Wisjva\",\n        \"profileImage\": null,\n        \"avgRating\": null\n    }\n}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Add review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ratedValue\": 4,\r\n    \"reviewText\": \"He did a great job!\",\r\n    \"reviewedToId\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\r\n    \"taskId\": \"7d79e44d-804b-43b7-b5a3-c87ad0e672f6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/reviews",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
