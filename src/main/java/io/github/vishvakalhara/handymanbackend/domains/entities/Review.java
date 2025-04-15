@@ -1,6 +1,7 @@
 package io.github.vishvakalhara.handymanbackend.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.github.vishvakalhara.handymanbackend.domains.ReviewGotAsRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,10 @@ public class Review {
     @JoinColumn(name = "task_id", nullable = false)
     @JsonBackReference
     private Task task;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReviewGotAsRole reviewGotAsRole;
 
     private LocalDateTime reviewedAt;
 

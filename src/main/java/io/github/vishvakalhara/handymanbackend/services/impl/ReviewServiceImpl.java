@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.services.impl;
 
+import io.github.vishvakalhara.handymanbackend.domains.ReviewGotAsRole;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.CreateReviewRequest;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Review;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
@@ -34,6 +35,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review createReview(CreateReviewRequest reqBody, UUID reviewedById) {
 
+        if(reqBody.getReviewedToId().equals(reviewedById)) {
+            throw new AppException("You cannot review yourself!", HttpStatus.FORBIDDEN);
+        }
+
         // Check whether already there is already a review
         if(reviewRepo.existsReviewByTask_IdAndReviewedBy_IdAndReviewedTo_Id(
                 reqBody.getTaskId(),
@@ -61,6 +66,12 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewedBy(reviewedByUser)
                 .reviewedTo(reviewedToUser)
                 .task(task)
+                .reviewGotAsRole(
+                        task.getCreator().getId().equals(reviewedById) ?
+                                ReviewGotAsRole.HANDY_MAN
+                                :
+                                ReviewGotAsRole.TASK_OWNER
+                )
                 .build();
 
         return reviewRepo.save(review);

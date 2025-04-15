@@ -45,10 +45,12 @@ public interface TaskMapper {
         for (Review r : reviews) {
             System.out.println(r.getReviewText());
             reviewDTOs.add(ReviewDTO.builder()
-                    .reviewedById(r.getReviewedBy().getId())
+                    .reviewedBy(removeCreatorDetails(r.getReviewedBy()))
+                    .reviewGot(removeCreatorDetails(r.getReviewedTo()))
                     .reviewText(r.getReviewText())
                     .ratedValue(r.getRatedValue())
                     .id(r.getId())
+                    .reviewGotAsRole(r.getReviewGotAsRole().name())
                     .build());
         }
 
