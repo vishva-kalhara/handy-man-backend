@@ -23,10 +23,10 @@ public class Notification {
     private UUID id;
 
     @Column(nullable = false)
-    private String message;
+    private String title;
 
     @Column(nullable = false)
-    private String btnText;
+    private String message;
 
     @Column(nullable = false)
     private String href;
@@ -43,6 +43,5 @@ public class Notification {
     @PrePersist
     protected void onSave(){
         this.createAt = LocalDateTime.now();
-        this.hasNoted = false;
     }
 }

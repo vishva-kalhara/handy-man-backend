@@ -3,8 +3,8 @@ package io.github.vishvakalhara.handymanbackend.services.impl;
 import io.github.vishvakalhara.handymanbackend.domains.entities.User;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
-import io.github.vishvakalhara.handymanbackend.security.UserPrincipal;
 import io.github.vishvakalhara.handymanbackend.services.AuthService;
+import io.github.vishvakalhara.handymanbackend.services.NotificationService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +30,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepo userRepo;
 
+    private final NotificationService notificationService;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
@@ -41,11 +43,18 @@ public class AuthServiceImpl implements AuthService {
             throw new AppException("Already there is a user with the same email: " + user.getEmail());
         }
 
+        // Saving the user in db
+        User createdUser = userRepo.save(user);
+
         // Hashing the password
         user.setPassword(new BCryptPasswordEncoder(10).encode(user.getPassword()));
 
-        // Saving the user in db
-        userRepo.save(user);
+        notificationService.AddNotification("Action Required!",
+                "Update your profile picture and bio.",
+                "/me/edit",
+                true,
+                createdUser
+        );
     }
 
     @Override

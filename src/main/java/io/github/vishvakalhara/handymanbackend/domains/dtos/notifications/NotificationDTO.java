@@ -5,14 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationDTO {
 
-    private LocalDateTime createdAt;
+    private UUID id;
+    private String title;
     private String message;
-    private String buttonText;
     private String href;
+    private LocalDateTime createdAt;
+    private boolean hasNoted;
 }

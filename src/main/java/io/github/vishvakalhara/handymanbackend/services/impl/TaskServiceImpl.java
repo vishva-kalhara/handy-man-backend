@@ -8,6 +8,7 @@ import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.FilterTasksReq
 import io.github.vishvakalhara.handymanbackend.domains.entities.*;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
 import io.github.vishvakalhara.handymanbackend.repositories.*;
+import io.github.vishvakalhara.handymanbackend.services.NotificationService;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepo taskRepo;
 
-    private final NotificationRepo notificationRepo;
+    private final NotificationService notificationService;
 
     private final BidRepo bidRepo;
 
@@ -117,25 +118,25 @@ public class TaskServiceImpl implements TaskService {
                 BidStatus.ACCEPTED
         ).getBidder();
 
-        // Notification for task owner
+        // Notification for Handyman
         notifications.add(Notification.builder()
+                .title("Action Required!")
                 .message("Review your handyman!")
-                .href("/reviews/create?taskId=" + task.getId() + "&reviewedToId" + acceptedBidder.getId())
-                .btnText("Review now")
+                .href("/tasks/" + task.getId())
                 .associatedUser(task.getCreator())
                 .build()
         );
 
         // Notification for task owner
         notifications.add(Notification.builder()
+                .title("Action Required!")
                 .message("Review the task owner!")
-                .href("/reviews/create?taskId=" + task.getId() + "&reviewedToId" + task.getCreator().getId())
-                .btnText("Review now")
+                .href("/tasks/" + task.getId())
                 .associatedUser(acceptedBidder)
                 .build()
         );
 
-        notificationRepo.saveAll(notifications);
+        notificationService.AddNotification(notifications);
 
         return taskRepo.save(task);
     }
