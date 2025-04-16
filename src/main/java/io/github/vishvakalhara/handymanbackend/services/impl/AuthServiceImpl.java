@@ -4,7 +4,6 @@ import io.github.vishvakalhara.handymanbackend.domains.entities.User;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.services.AuthService;
-import io.github.vishvakalhara.handymanbackend.services.NotificationService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepo userRepo;
 
-    private final NotificationService notificationService;
+    private final NotificationServiceImpl notificationServiceImpl;
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -49,7 +48,8 @@ public class AuthServiceImpl implements AuthService {
         // Hashing the password
         user.setPassword(new BCryptPasswordEncoder(10).encode(user.getPassword()));
 
-        notificationService.AddNotification("Action Required!",
+        notificationServiceImpl.AddNotification(
+                "Action Required!",
                 "Update your profile picture and bio.",
                 "/me/edit",
                 true,

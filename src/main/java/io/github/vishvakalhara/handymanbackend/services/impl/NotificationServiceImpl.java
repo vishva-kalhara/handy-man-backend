@@ -25,19 +25,16 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final UserRepo userRepo;
 
-    @Override
     public Notification AddNotification(String title, String message, String href, UUID userId) {
 
         return this.AddNotification(title, message, href, userService.getOneUser(userId));
     }
 
-    @Override
     public Notification AddNotification(String title, String message, String href, User user) {
 
-        return this.AddNotification(title, message, href, false, new User());
+        return this.AddNotification(title, message, href, false, user);
     }
 
-    @Override
     public Notification AddNotification(String title, String message, String href, boolean isActionRequired, User user) {
 
         return this.AddNotification(Notification.builder()
@@ -50,7 +47,6 @@ public class NotificationServiceImpl implements NotificationService {
         );
     }
 
-    @Override
     public Notification AddNotification(Notification notification) {
 
         return notificationRepo.save(notification);
