@@ -16,6 +16,6 @@ public class NotificationDTO {
     private String title;
     private String message;
     private String href;
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
     private boolean hasNoted;
 }
