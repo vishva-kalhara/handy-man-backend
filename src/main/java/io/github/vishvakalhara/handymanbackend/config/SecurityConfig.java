@@ -1,9 +1,7 @@
 package io.github.vishvakalhara.handymanbackend.config;
 
-import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.security.JwtAuthenticationFilter;
 import io.github.vishvakalhara.handymanbackend.services.AuthService;
-import io.github.vishvakalhara.handymanbackend.services.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -42,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/tasks/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/api/v1/categories/seed").permitAll()
                         .anyRequest().authenticated()
                 ).csrf(AbstractHttpConfigurer::disable)
