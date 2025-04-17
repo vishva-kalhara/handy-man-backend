@@ -4,6 +4,7 @@ import io.github.vishvakalhara.handymanbackend.domains.entities.User;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.services.AuthService;
+import io.github.vishvakalhara.handymanbackend.util.NotificationText;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
 
         notificationServiceImpl.AddNotification(
                 "Action Required!",
-                "Update your profile picture and bio.",
+                NotificationText.getMessageToUserAtRegistration(),
                 "/me/edit",
                 true,
                 createdUser

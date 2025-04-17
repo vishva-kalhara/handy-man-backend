@@ -232,6 +232,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update my bio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bio\": \"hjdksjad ndjas das dnasjd asjdnasd aso aodsmasd asdj\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/me/bio",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"bio"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1023,14 +1061,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/reviews/user/b885e371-5eb2-4248-8e31-339204a7e327?isDesc=true",
+							"raw": "{{URL}}/reviews/user/66d712e1-bf20-4a1f-a9da-4ea6b77399c2?isDesc=true",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"reviews",
 								"user",
-								"b885e371-5eb2-4248-8e31-339204a7e327"
+								"66d712e1-bf20-4a1f-a9da-4ea6b77399c2"
 							],
 							"query": [
 								{

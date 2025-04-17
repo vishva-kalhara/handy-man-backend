@@ -8,5 +8,5 @@ public interface UserService {
 
     User getOneUser(UUID id);
 
-    User updateReviews(Double rating);
+    User updateMyBio(String bio, UUID userId);
 }

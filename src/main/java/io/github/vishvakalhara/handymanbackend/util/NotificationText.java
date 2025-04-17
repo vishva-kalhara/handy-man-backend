@@ -34,4 +34,9 @@ public class NotificationText {
 
         return "Congratulations! Your offer of " + FMT.formatCurrency(price) + " accepted for " + taskName + ".";
     }
+
+    public static String getMessageToUserAtRegistration() {
+
+        return "Update your profile picture and bio.";
+    }
 }
