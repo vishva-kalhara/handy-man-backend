@@ -10,4 +10,5 @@ public class SimpleReviewDTO {
     private UUID id;
     private Double ratedValue;
     private String reviewText;
+    private String reviewGotAsRole;
 }
