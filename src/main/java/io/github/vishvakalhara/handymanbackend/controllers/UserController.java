@@ -46,11 +46,13 @@ public class UserController {
         return ResponseEntity.ok(userMapper.entityToGetMe(user));
     }
 
-    @PatchMapping(path = "/my-img", consumes = "multipart/form-data")
+    @PatchMapping(path = "/me/my-img", consumes = "multipart/form-data")
     public ResponseEntity<UserDTO> updateMyImage(
-            @RequestPart("image") MultipartFile image) {
+            @RequestPart("image") MultipartFile image,
+            @RequestAttribute UUID userId
+    ) {
 
-        // Get UUID from request scope
-        return ResponseEntity.ok(new UserDTO());
+        User user = userService.updateMyPicture(image, userId);
+        return ResponseEntity.ok(userMapper.entityToGetMe(user));
     }
 }

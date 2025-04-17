@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.services.impl;
 
+import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Notification;
 import io.github.vishvakalhara.handymanbackend.domains.entities.User;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -49,6 +51,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         user.setBio(bio);
+        return userRepo.save(user);
+    }
+
+    @Override
+    public User updateMyPicture(MultipartFile picture, UUID userId) {
+
+        User user = userRepo.findById(userId).orElseThrow(
+                () -> new AppException("User not found!", HttpStatus.NOT_FOUND)
+        );
+
+        String uri = new S3Service().uploadFile(picture);
+        user.setProfileImage(uri);
+
         return userRepo.save(user);
     }
 
