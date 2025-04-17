@@ -23,7 +23,8 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getOneUser(@PathVariable UUID id){
 
-        return ResponseEntity.ok(new UserDTO());
+        User user = userService.getOneUser(id);
+        return ResponseEntity.ok(userMapper.entityToGetMe(user));
     }
 
     @GetMapping("/me")

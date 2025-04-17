@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ReviewService {
 
-    List<Review> getMyReviewsIGot(UUID userId);
+    List<Review> getReviewsUserGot(UUID userId, boolean isDesc);
 
     Review createReview(CreateReviewRequest reqBody, UUID reviewedById);
 }

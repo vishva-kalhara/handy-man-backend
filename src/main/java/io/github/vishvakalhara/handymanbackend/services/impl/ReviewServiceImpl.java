@@ -28,8 +28,16 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepo reviewRepo;
 
     @Override
-    public List<Review> getMyReviewsIGot(UUID userId) {
-        return List.of();
+    public List<Review> getReviewsUserGot(UUID userId, boolean isDesc) {
+
+        if(!userRepo.existsUserById(userId)){
+            throw new AppException("User not found!", HttpStatus.NOT_FOUND);
+        }
+
+        if(isDesc)
+            return reviewRepo.findTop10ByReviewedTo_IdOrderByRatedValueDesc(userId);
+
+        return reviewRepo.findTop10ByReviewedTo_IdOrderByRatedValueAsc(userId);
     }
 
     @Override

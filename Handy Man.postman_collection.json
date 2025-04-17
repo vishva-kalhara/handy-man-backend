@@ -214,6 +214,24 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/users/6c592fa3-7fde-4f0d-9e48-475fd14c7f3f",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"6c592fa3-7fde-4f0d-9e48-475fd14c7f3f"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -994,6 +1012,64 @@
 							],
 							"path": [
 								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/reviews/user/b885e371-5eb2-4248-8e31-339204a7e327?isDesc=true",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"reviews",
+								"user",
+								"b885e371-5eb2-4248-8e31-339204a7e327"
+							],
+							"query": [
+								{
+									"key": "isDesc",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get my notifications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/notifications/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"notifications",
+								"me"
 							]
 						}
 					},

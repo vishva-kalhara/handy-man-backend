@@ -40,6 +40,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/tasks/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/reviews/user/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/api/v1/categories/seed").permitAll()
                         .anyRequest().authenticated()

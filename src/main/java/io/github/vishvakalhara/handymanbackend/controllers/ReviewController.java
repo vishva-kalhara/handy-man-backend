@@ -1,8 +1,9 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
-import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.ReviewDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.CreateReviewRequest;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.reviews.SimpleReviewDTO;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Review;
+import io.github.vishvakalhara.handymanbackend.mappers.ReviewMapper;
 import io.github.vishvakalhara.handymanbackend.services.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +20,8 @@ import java.util.UUID;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
+    private final ReviewMapper reviewMapper;
 
     @PostMapping
     public ResponseEntity<Review> updateReview(
@@ -31,11 +33,13 @@ public class ReviewController {
         return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<List<ReviewDTO>> getMyReviews(){
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<SimpleReviewDTO>> getReviewsUserGot(
+            @PathVariable UUID userId,
+            @RequestParam(defaultValue = "true") boolean isDesc
+    ){
 
-        // Get User UUID from request scope
-        // reviewService.getMyReviewsIGot();
-        return ResponseEntity.ok(new ArrayList<>());
+        List<Review> reviews = reviewService.getReviewsUserGot(userId, isDesc);
+        return ResponseEntity.ok(reviewMapper.entityToSimpleReviewDTO(reviews));
     }
 }
