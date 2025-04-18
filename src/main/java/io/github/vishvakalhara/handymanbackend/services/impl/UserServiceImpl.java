@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.services.impl;
 
+import io.github.vishvakalhara.handymanbackend.aws_s3_storage.ResourceType;
 import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Notification;
 import io.github.vishvakalhara.handymanbackend.domains.entities.User;
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
 
     private final NotificationRepo notificationRepo;
+
+    private final S3Service s3Service;
 
     @Override
     public User getOneUser(UUID id) {
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 () -> new AppException("User not found!", HttpStatus.NOT_FOUND)
         );
 
-        String uri = new S3Service().uploadFile(picture);
+        String uri = s3Service.uploadFile(picture, ResourceType.USER_IMAGE);
         user.setProfileImage(uri);
 
         return userRepo.save(user);

@@ -1,5 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.services.impl;
 
+import io.github.vishvakalhara.handymanbackend.aws_s3_storage.ResourceType;
 import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
 import io.github.vishvakalhara.handymanbackend.domains.BidStatus;
 import io.github.vishvakalhara.handymanbackend.domains.TaskStatus;
@@ -35,6 +36,8 @@ public class TaskServiceImpl implements TaskService {
 
     private final BidRepo bidRepo;
 
+    private final S3Service s3Service;
+
     @Override
     public List<Task> getAllTasks(FilterTasksRequest queryParams) {
 
@@ -53,8 +56,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task createTask(CreateTaskRequest data) {
 
-        // Upload image and get the uri
-        String imageUri = new S3Service().uploadFile(data.getImage());
+        String imageUri = s3Service.uploadFile(data.getImage(), ResourceType.TASK_IMAGE);
 
         // find category
         Category category = categoryRepo.findById(data.getCategoryId()).orElseThrow(() -> new AppException("Category not found. Please select another category.", HttpStatus.NOT_FOUND));
