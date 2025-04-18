@@ -6,6 +6,8 @@ import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
 import io.github.vishvakalhara.handymanbackend.mappers.TaskMapper;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -68,7 +70,26 @@ public class TaskController {
         return ResponseEntity.ok(taskMapper.entityToDTO(task));
     }
 
-    @PostMapping(consumes =  {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @GetMapping("/my-tasks")
+    public ResponseEntity<List<SimpleTaskDTO>> getMyTasks(
+            @RequestAttribute UUID userId,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir
+    ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+        List<Task> tasks = taskService.getMyTasks(userId, pageable);
+
+        return ResponseEntity.ok(taskMapper.entityToSimpleTaskDTO(tasks));
+    }
+
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
     public ResponseEntity<TaskDTO> uploadFile(
             @RequestPart("image") MultipartFile file,
             @RequestPart("data") CreateTaskRequest data,

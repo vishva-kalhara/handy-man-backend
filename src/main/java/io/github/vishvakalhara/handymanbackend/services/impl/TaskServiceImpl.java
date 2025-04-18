@@ -12,6 +12,7 @@ import io.github.vishvakalhara.handymanbackend.services.NotificationService;
 import io.github.vishvakalhara.handymanbackend.services.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +88,16 @@ public class TaskServiceImpl implements TaskService {
         }
 
         return task;
+    }
+
+    @Override
+    public List<Task> getMyTasks(UUID userId, Pageable pageable) {
+
+        if (!userRepo.existsUserById(userId)) {
+            throw new AppException("User not found!", HttpStatus.NOT_FOUND);
+        }
+
+        return taskRepo.findTasksByCreator_Id(userId, pageable);
     }
 
     @Transactional

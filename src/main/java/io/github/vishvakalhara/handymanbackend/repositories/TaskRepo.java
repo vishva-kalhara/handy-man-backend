@@ -33,4 +33,6 @@ public interface TaskRepo extends JpaRepository<Task, UUID> {
             @Param("isDeleted") Boolean isDeleted,
             Pageable pageable
     );
+
+    List<Task> findTasksByCreator_Id(UUID creatorId, Pageable pageable);
 }
