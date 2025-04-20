@@ -137,6 +137,7 @@ public class TaskServiceImpl implements TaskService {
                 .message("Review your handyman!")
                 .href("/tasks/" + task.getId())
                 .associatedUser(task.getCreator())
+                .hasNoted(true)
                 .build()
         );
 

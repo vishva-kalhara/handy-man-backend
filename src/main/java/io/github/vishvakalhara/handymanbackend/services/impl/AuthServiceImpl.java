@@ -43,11 +43,11 @@ public class AuthServiceImpl implements AuthService {
             throw new AppException("Already there is a user with the same email: " + user.getEmail());
         }
 
-        // Saving the user in db
-        User createdUser = userRepo.save(user);
-
         // Hashing the password
         user.setPassword(new BCryptPasswordEncoder(10).encode(user.getPassword()));
+
+        // Saving the user in db
+        User createdUser = userRepo.save(user);
 
         notificationServiceImpl.AddNotification(
                 "Action Required!",

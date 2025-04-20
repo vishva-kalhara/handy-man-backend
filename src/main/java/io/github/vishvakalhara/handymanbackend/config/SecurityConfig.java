@@ -1,7 +1,11 @@
 package io.github.vishvakalhara.handymanbackend.config;
 
+import io.github.vishvakalhara.handymanbackend.aws_s3_storage.S3Service;
+import io.github.vishvakalhara.handymanbackend.repositories.NotificationRepo;
+import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
 import io.github.vishvakalhara.handymanbackend.security.JwtAuthenticationFilter;
 import io.github.vishvakalhara.handymanbackend.services.AuthService;
+import io.github.vishvakalhara.handymanbackend.services.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,8 +31,8 @@ public class SecurityConfig {
     }
 
 //    @Bean
-//    public UserDetailsService userDetailsService(UserRepo userRepo){
-//        return new UserServiceImpl(userRepo);
+//    public UserDetailsService userDetailsService(UserRepo userRepo, NotificationRepo notificationRepo, S3Service s3Service) {
+//        return new UserServiceImpl(userRepo, notificationRepo, s3Service);
 //    }
 
     @Bean
@@ -54,13 +58,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+    public AuthenticationProvider authenticationProvider(UserServiceImpl userServiceImpl) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService); // Ensure this is set
-
-        // Default / Plain encoder
-        // provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-
+        provider.setUserDetailsService(userServiceImpl);
         provider.setPasswordEncoder(new BCryptPasswordEncoder(10));
         return provider;
     }
