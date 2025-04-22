@@ -1,6 +1,7 @@
 package io.github.vishvakalhara.handymanbackend.domains.dtos.messages;
 
-import jakarta.validation.constraints.NotBlank;
+import io.github.vishvakalhara.handymanbackend.domains.MessageType;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.UUID;
@@ -8,9 +9,11 @@ import java.util.UUID;
 @Data
 public class SendMessageRequest {
 
-    @NotBlank(message = "Recipient id is required!")
-    private UUID recipient;
+    @NotNull(message = "Recipient id is required!")
+    private UUID recipientId;
 
-    @NotBlank(message = "Message is required!")
+    @NotNull(message = "Message is required!")
     private String message;
+
+    private MessageType messageType = MessageType.TEXT;
 }

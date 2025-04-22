@@ -2,6 +2,9 @@ package io.github.vishvakalhara.handymanbackend.controllers;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.MessageDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.SendMessageRequest;
+import io.github.vishvakalhara.handymanbackend.domains.entities.Message;
+import io.github.vishvakalhara.handymanbackend.mappers.MessageMapper;
+import io.github.vishvakalhara.handymanbackend.services.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,15 +20,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MessageController {
 
-    @PostMapping
-    public ResponseEntity<MessageDTO> sendMessage(@Valid @RequestBody SendMessageRequest requestBody){
+    private final MessageService messageService;
 
-        // Get sender's id using request scope
-        return new ResponseEntity<>(new MessageDTO(), HttpStatus.CREATED);
+    private final MessageMapper messageMapper;
+
+    @PostMapping
+    public ResponseEntity<MessageDTO> sendMessage(
+            @Valid @RequestBody SendMessageRequest requestBody,
+            @RequestAttribute UUID userId
+    ) {
+
+        Message sentMessage = messageService.sendMessage(userId, requestBody);
+        return new ResponseEntity<>(messageMapper.entityToDTO(sentMessage, userId), HttpStatus.CREATED);
     }
 
     @GetMapping("/byRecipient/{recipientId}")
-    public ResponseEntity<List<MessageDTO>> getAllMessagesByRecipient(@PathVariable UUID recipientId){
+    public ResponseEntity<List<MessageDTO>> getAllMessagesByRecipient(@PathVariable UUID recipientId) {
 
         // Filter messages by the logged user id and recipient id. these can be sender or recipient.
         return ResponseEntity.ok(new ArrayList<>());

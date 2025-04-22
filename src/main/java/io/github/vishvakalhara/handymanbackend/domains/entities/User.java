@@ -65,9 +65,11 @@ public class User {
     private List<Bid> bids = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
+    @JsonIgnore
     private List<Message> sentMessages;
 
     @OneToMany(mappedBy = "recipient")
+    @JsonIgnore
     private List<Message> receivedMessages;
 
     @OneToMany(mappedBy = "reviewedBy")
