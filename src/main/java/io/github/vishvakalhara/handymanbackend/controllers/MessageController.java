@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,10 +33,13 @@ public class MessageController {
         return new ResponseEntity<>(messageMapper.entityToDTO(sentMessage, userId), HttpStatus.CREATED);
     }
 
-    @GetMapping("/byRecipient/{recipientId}")
-    public ResponseEntity<List<MessageDTO>> getAllMessagesByRecipient(@PathVariable UUID recipientId) {
+    @GetMapping("/by-recipient/{recipientId}")
+    public ResponseEntity<List<MessageDTO>> getAllMessagesByRecipient(
+            @PathVariable UUID recipientId,
+            @RequestAttribute UUID userId
+    ) {
 
-        // Filter messages by the logged user id and recipient id. these can be sender or recipient.
-        return ResponseEntity.ok(new ArrayList<>());
+        List<Message> messages = messageService.getMessagesByRecipient(recipientId, userId);
+        return ResponseEntity.ok(messageMapper.entityToDTO(messages, userId));
     }
 }

@@ -1114,6 +1114,76 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recipientId\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\r\n    \"message\": \"Of course\",\r\n    \"messageType\": \"TEXT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/messages",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages by recipient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/messages/by-recipient/b885e371-5eb2-4248-8e31-339204a7e327",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"messages",
+								"by-recipient",
+								"b885e371-5eb2-4248-8e31-339204a7e327"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [

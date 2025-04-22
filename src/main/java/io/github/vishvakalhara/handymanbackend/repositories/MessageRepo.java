@@ -22,4 +22,16 @@ public interface MessageRepo extends JpaRepository<Message, UUID> {
         )
     """)
     List<User> findDistinctUsersCommunicatedWith(UUID myId);
+
+    @Query("""
+           SELECT m
+           FROM Message m
+           WHERE (
+                 m.sender.id = :recipientId AND m.recipient.id = :myId
+           ) OR (
+                 m.sender.id = :myId AND m.recipient.id = :recipientId
+           )
+            ORDER BY m.sentAt ASC
+          """)
+    List<Message> findMessagesByReceiver(UUID recipientId, UUID myId);
 }

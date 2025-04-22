@@ -1,4 +1,4 @@
-package io.github.vishvakalhara.handymanbackend.services;
+package io.github.vishvakalhara.handymanbackend.services.impl;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.SendMessageRequest;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Message;
@@ -6,10 +6,12 @@ import io.github.vishvakalhara.handymanbackend.domains.entities.User;
 import io.github.vishvakalhara.handymanbackend.error_handling.AppException;
 import io.github.vishvakalhara.handymanbackend.repositories.MessageRepo;
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
+import io.github.vishvakalhara.handymanbackend.services.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -43,5 +45,23 @@ public class MessageServiceImpl implements MessageService {
                 .build();
 
         return messageRepo.save(message);
+    }
+
+    @Override
+    public List<Message> getMessagesByRecipient(UUID recipientId, UUID myId) {
+
+        if(recipientId.equals(myId)){
+            throw new AppException("Sender cannot send messages back to sender!", HttpStatus.FORBIDDEN);
+        }
+
+        if(!userRepo.existsUserById(recipientId)) {
+            throw new AppException("Recipient not found!", HttpStatus.NOT_FOUND);
+        }
+
+        if(!userRepo.existsUserById(myId)) {
+            throw new AppException("User not found!", HttpStatus.NOT_FOUND);
+        }
+
+        return messageRepo.findMessagesByReceiver(recipientId, myId);
     }
 }
