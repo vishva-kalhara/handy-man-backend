@@ -1135,7 +1135,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"recipientId\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\r\n    \"message\": \"Of course\",\r\n    \"messageType\": \"TEXT\"\r\n}",
+							"raw": "{\r\n    \"recipientId\": \"b885e371-5eb2-4248-8e31-339204a7e327\",\r\n    \"message\": \"OOOOh\",\r\n    \"messageType\": \"TEXT\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1178,6 +1178,34 @@
 								"messages",
 								"by-recipient",
 								"b885e371-5eb2-4248-8e31-339204a7e327"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get my recipients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/messages/my-recipients",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"messages",
+								"my-recipients"
 							]
 						}
 					},

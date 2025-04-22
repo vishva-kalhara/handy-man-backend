@@ -21,7 +21,7 @@ public interface MessageRepo extends JpaRepository<Message, UUID> {
             SELECT m.recipient.id FROM Message m WHERE m.sender.id = :userId
         )
     """)
-    List<User> findDistinctUsersCommunicatedWith(UUID myId);
+    List<User> findDistinctUsersCommunicatedWith(UUID userId);
 
     @Query("""
            SELECT m

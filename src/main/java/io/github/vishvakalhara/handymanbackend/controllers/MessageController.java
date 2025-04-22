@@ -2,8 +2,11 @@ package io.github.vishvakalhara.handymanbackend.controllers;
 
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.MessageDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.messages.SendMessageRequest;
+import io.github.vishvakalhara.handymanbackend.domains.dtos.user.SimpleUserDTO;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Message;
+import io.github.vishvakalhara.handymanbackend.domains.entities.User;
 import io.github.vishvakalhara.handymanbackend.mappers.MessageMapper;
+import io.github.vishvakalhara.handymanbackend.mappers.UserMapper;
 import io.github.vishvakalhara.handymanbackend.services.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,8 @@ public class MessageController {
 
     private final MessageMapper messageMapper;
 
+    private final UserMapper userMapper;
+
     @PostMapping
     public ResponseEntity<MessageDTO> sendMessage(
             @Valid @RequestBody SendMessageRequest requestBody,
@@ -41,5 +46,12 @@ public class MessageController {
 
         List<Message> messages = messageService.getMessagesByRecipient(recipientId, userId);
         return ResponseEntity.ok(messageMapper.entityToDTO(messages, userId));
+    }
+
+    @GetMapping("/my-recipients")
+    public ResponseEntity<List<SimpleUserDTO>> getMyRecipients(@RequestAttribute UUID userId){
+
+        List<User> users = messageService.getMyRecipients(userId);
+        return ResponseEntity.ok(userMapper.entityToSimpleUserDTO(users));
     }
 }

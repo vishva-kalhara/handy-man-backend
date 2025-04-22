@@ -64,4 +64,14 @@ public class MessageServiceImpl implements MessageService {
 
         return messageRepo.findMessagesByReceiver(recipientId, myId);
     }
+
+    @Override
+    public List<User> getMyRecipients(UUID myId) {
+
+        if(!userRepo.existsUserById(myId)) {
+            throw new AppException("User not found!", HttpStatus.NOT_FOUND);
+        }
+
+        return messageRepo.findDistinctUsersCommunicatedWith(myId);
+    }
 }
