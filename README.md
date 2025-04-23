@@ -22,6 +22,7 @@ Goal: Streamline home services while empowering local tradespeople.
 - `AWS S3, AWS Elastic BeanStalk`
 - `Mapstruct`
 - `PostgreSQL`
+- `Repositry Pattern`
 
 # Environment Variables
 
@@ -44,4 +45,6 @@ Goal: Streamline home services while empowering local tradespeople.
 - `spring.jpa.show-sql`=`true`
 - `spring.jpa.properties.hibernate.format_sql`=`true`
 - `spring.jpa.properties.hibernate.dialect`=`org.hibernate.dialect.PostgreSQLDialect`
+
+### JWT Config
 - `jwt.secret`
