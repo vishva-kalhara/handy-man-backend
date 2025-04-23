@@ -12,14 +12,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = UserMapper.class)
 public interface TaskMapper {
 
-    @Mapping(target = "creator", source = "creator", qualifiedByName = "removeCreatorDetails")
+    UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+
+    @Mapping(target = "creator", source = "creator", qualifiedByName = "entityToSimpleUserDTO")
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
     @Mapping(target = "taskStatus", source = "taskStatus", qualifiedByName = "mapTaskStatus")
     @Mapping(target = "chosenBidder", source = "bids", qualifiedByName = "mapChosenBidder")
@@ -45,8 +48,8 @@ public interface TaskMapper {
         for (Review r : reviews) {
             System.out.println(r.getReviewText());
             reviewDTOs.add(ReviewDTO.builder()
-                    .reviewedBy(removeCreatorDetails(r.getReviewedBy()))
-                    .reviewGot(removeCreatorDetails(r.getReviewedTo()))
+                    .reviewedBy(userMapper.entityToSimpleUserDTO(r.getReviewedBy()))
+                    .reviewGot(userMapper.entityToSimpleUserDTO(r.getReviewedTo()))
                     .reviewText(r.getReviewText())
                     .ratedValue(r.getRatedValue())
                     .id(r.getId())
@@ -65,28 +68,28 @@ public interface TaskMapper {
 
         for (Bid bid : bids) {
             if (bid.getBidStatus() == BidStatus.ACCEPTED) {
-                return removeCreatorDetails(bid.getBidder());
+                return userMapper.entityToSimpleUserDTO(bid.getBidder());
             }
         }
 
         return null;
     }
-
-    @Named("removeCreatorDetails")
-    default SimpleUserDTO removeCreatorDetails(User creator) {
-
-        return SimpleUserDTO.builder()
-                .id(creator.getId())
-                .displayName(creator.getDisplayName())
-                .profileImage(creator.getProfileImage())
-                .avgRating(
-                        creator.getTotalReviewsCount() == 0 ?
-                                null
-                                :
-                                creator.getTotalReviewsValue() / creator.getTotalReviewsCount()
-                )
-                .build();
-    }
+//
+//    @Named("removeCreatorDetails")
+//    default SimpleUserDTO removeCreatorDetails(User creator) {
+//
+//        return SimpleUserDTO.builder()
+//                .id(creator.getId())
+//                .displayName(creator.getDisplayName())
+//                .profileImage(creator.getProfileImage())
+//                .avgRating(
+//                        creator.getTotalReviewsCount() == 0 ?
+//                                null
+//                                :
+//                                creator.getTotalReviewsValue() / creator.getTotalReviewsCount()
+//                )
+//                .build();
+//    }
 
     @Named("mapCategory")
     default CategoryDTO mapCategory(Category category) {
