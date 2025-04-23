@@ -5,10 +5,7 @@ import io.github.vishvakalhara.handymanbackend.domains.dtos.user.SimpleUserDTO;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.user.UserDTO;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Review;
 import io.github.vishvakalhara.handymanbackend.domains.entities.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -20,8 +17,8 @@ public interface UserMapper {
     @Mapping(target = "avgRating", source = "reviewsIGot", qualifiedByName = "calculateAvgRating")
     UserDTO entityToGetMe(User user);
 
-//    @Mapping(target = "avgRating", source = "reviewsIGot", qualifiedByName = "calculateAvgRating")
-    List<SimpleUserDTO> entityToSimpleUserDTO(List<User> user);
+    @IterableMapping(qualifiedByName = "entityToSimpleUserDTO")
+    List<SimpleUserDTO> entityToSimpleUserDTO(List<User> users);
 
     @Named("entityToSimpleUserDTO")
     @Mapping(target = "avgRating", source = "reviewsIGot", qualifiedByName = "calculateAvgRating")
