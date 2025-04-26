@@ -118,7 +118,7 @@ public class TaskController {
     }
 
     @PatchMapping("/{taskId}/complete")
-    public ResponseEntity<SimpleTaskDTO> updateOneTask(
+    public ResponseEntity<SimpleTaskDTO> completeTask(
             @PathVariable UUID taskId,
             @RequestAttribute UUID userId
     ) {

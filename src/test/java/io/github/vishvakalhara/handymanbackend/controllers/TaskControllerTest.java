@@ -185,5 +185,53 @@ public class TaskControllerTest {
         ).andExpect(status().isNoContent());
     }
 
+    @Test
+    public void testCompleteTask_EndpointMustBeSecured() throws Exception {
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/v1/tasks/" + UUID.randomUUID() + "/complete")
+        ).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void testCompleteTask_InvalidTaskId() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/v1/tasks/" + UUID.randomUUID() + "/complete")
+                        .header("Authorization", "Bearer " + this.authToken)
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testCompleteTask_TaskIsDeleted() throws Exception {
+
+        testCreateTask_ValidTask();
+
+        Task task = taskRepo.findById(UUID.fromString(this.validTaskId)).get();
+        task.setIsDeleted(true);
+        taskRepo.save(task);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/v1/tasks/" + UUID.randomUUID() + "/complete")
+                        .header("Authorization", "Bearer " + this.authToken)
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testOneTasks_InvalidTaskId() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/tasks/" + UUID.randomUUID())
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testOneTasks_ValidTaskId() throws Exception {
+
+        testCreateTask_ValidTask();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/tasks/" + this.validTaskId)
+        ).andExpect(status().isOk());
+    }
 }
