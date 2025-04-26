@@ -48,8 +48,6 @@ public class BidControllerTest {
 
     private UUID mockTaskId;
 
-    private CreateBidRequest reqBody;
-
     @BeforeAll
     public void doBeforeAll() throws Exception {
 
@@ -57,9 +55,13 @@ public class BidControllerTest {
         this.mockTaskId = createMockTask(mockMvc, objectMapper, createMockCategory(categoryRepo), this.authToken);
     }
 
-    @BeforeEach
-    public void doBeforeEach() {
-        this.reqBody = CreateBidRequest.builder()
+    @AfterAll
+    public void doAfterAll(){
+        bidRepo.deleteAll();
+    }
+
+    private CreateBidRequest getCreateBidRequest(){
+        return CreateBidRequest.builder()
                 .taskId(this.mockTaskId)
                 .price(5000D)
                 .build();
@@ -81,12 +83,13 @@ public class BidControllerTest {
     @Test
     public void testCreateBid_PriceNotPresent() throws Exception {
 
-        this.reqBody.setPrice(0D);
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setPrice(0D);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/v1/bids")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.reqBody))
+                                .content(objectMapper.writeValueAsString(reqBody))
                                 .header("Authorization", "Bearer " + authToken)
                 )
                 .andExpect(status().isBadRequest());
@@ -95,12 +98,13 @@ public class BidControllerTest {
     @Test
     public void testCreateBid_PriceIsNegative() throws Exception {
 
-        this.reqBody.setPrice(-1000D);
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setPrice(-1000D);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/v1/bids")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.reqBody))
+                                .content(objectMapper.writeValueAsString(reqBody))
                                 .header("Authorization", "Bearer " + authToken)
                 )
                 .andExpect(status().isBadRequest());
@@ -109,12 +113,13 @@ public class BidControllerTest {
     @Test
     public void testCreateBid_TaskIdNotPresent() throws Exception {
 
-        this.reqBody.setTaskId(null);
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setTaskId(null);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/v1/bids")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.reqBody))
+                                .content(objectMapper.writeValueAsString(reqBody))
                                 .header("Authorization", "Bearer " + authToken)
                 )
                 .andExpect(status().isBadRequest());
@@ -123,12 +128,13 @@ public class BidControllerTest {
     @Test
     public void testCreateBid_TaskIsNotFound() throws Exception {
 
-        this.reqBody.setTaskId(UUID.randomUUID());
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setTaskId(UUID.randomUUID());
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/v1/bids")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.reqBody))
+                                .content(objectMapper.writeValueAsString(reqBody))
                                 .header("Authorization", "Bearer " + authToken)
                 )
                 .andExpect(status().isNotFound())
@@ -143,12 +149,13 @@ public class BidControllerTest {
         taskToBeDeleted.setIsDeleted(true);
         taskRepo.save(taskToBeDeleted);
 
-        this.reqBody.setTaskId(taskToBeDeletedId);
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setTaskId(taskToBeDeletedId);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/v1/bids")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.reqBody))
+                                .content(objectMapper.writeValueAsString(reqBody))
                                 .header("Authorization", "Bearer " + authToken)
                 )
                 .andExpect(status().isNotFound())
@@ -163,12 +170,13 @@ public class BidControllerTest {
         taskToBeUpdated.setTaskStatus(TaskStatus.WAITING_TO_COMPLETE);
         taskRepo.save(taskToBeUpdated);
 
-        this.reqBody.setTaskId(taskToBeUpdatedId);
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setTaskId(taskToBeUpdatedId);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/v1/bids")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.reqBody))
+                                .content(objectMapper.writeValueAsString(reqBody))
                                 .header("Authorization", "Bearer " + authToken)
                 )
                 .andExpect(status().isForbidden())
@@ -178,12 +186,13 @@ public class BidControllerTest {
     @Test
     public void testCreateBid_TaskOwnerCannotBid() throws Exception {
 
-        this.reqBody.setTaskId(this.mockTaskId);
+        CreateBidRequest reqBody = getCreateBidRequest();
+        reqBody.setTaskId(this.mockTaskId);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/bids")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(this.reqBody))
+                        .content(objectMapper.writeValueAsString(reqBody))
                         .header("Authorization", "Bearer " + authToken)
         ).andExpect(status().isForbidden());
     }
