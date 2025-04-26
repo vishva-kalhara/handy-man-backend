@@ -48,3 +48,8 @@ Goal: Streamline home services while empowering local tradespeople.
 
 ### JWT Config
 - `jwt.secret`
+
+- Task onwer accepts an offer - Task owner should get a message to complete the task
+- Task owner completed a task - Both Handyman and Task owner get notified to review
+- SHOULD update the has noted state to false after reviewing the other
+- SHOULD remove the has noted of handymand acception notification after completing the task 
