@@ -1,10 +1,6 @@
 package io.github.vishvakalhara.handymanbackend.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.auth.RegisterRequest;
-import io.github.vishvakalhara.handymanbackend.domains.dtos.tasks.CreateTaskRequest;
-import io.github.vishvakalhara.handymanbackend.domains.entities.Category;
 import io.github.vishvakalhara.handymanbackend.domains.entities.Task;
 import io.github.vishvakalhara.handymanbackend.repositories.CategoryRepo;
 import io.github.vishvakalhara.handymanbackend.repositories.NotificationRepo;
@@ -15,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static io.github.vishvakalhara.handymanbackend.operations.TaskOperations.createMockTask;
+import static io.github.vishvakalhara.handymanbackend.operations.UserOperations.createUserAndGetToken;
 
 import java.util.UUID;
 
@@ -48,37 +45,12 @@ public class TaskControllerTest {
     @Autowired
     private NotificationRepo notificationRepo;
 
-    private static final String VALID_USERNAME = "test@example.com";
-
-    private String validTaskId;
-
-    private UUID validCategoryId;
-
     private String authToken;
 
     @BeforeAll
     public void doBeforeAll() throws Exception {
 
-        this.validCategoryId = categoryRepo.save(
-                Category.builder()
-                        .categoryName("Test Category")
-                        .build()
-        ).getId();
-
-        MvcResult res = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new RegisterRequest(
-                                        "Test Display Name",
-                                        VALID_USERNAME,
-                                        "123456"
-                                ))
-                        )
-        ).andReturn();
-
-        String responseBody = res.getResponse().getContentAsString();
-        JsonNode jsonNode = objectMapper.readTree(responseBody);
-        this.authToken = jsonNode.get("token").asText();
+        this.authToken = createUserAndGetToken(mockMvc, objectMapper);
     }
 
     @AfterAll
@@ -106,35 +78,7 @@ public class TaskControllerTest {
     @Test
     public void testCreateTask_ValidTask() throws Exception {
 
-        MockMultipartFile imageFile = new MockMultipartFile(
-                "image", "test.jpg", "image/jpeg", "dummy-image-content".getBytes()
-        );
-
-        CreateTaskRequest requestData = CreateTaskRequest.builder()
-                .title("Sample Task")
-                .description("Do something")
-                .maxPrice(100D)
-                .categoryId(this.validCategoryId)
-                .isEmergency(false)
-                .build();
-
-        MockMultipartFile data = new MockMultipartFile(
-                "data", "",
-                MediaType.APPLICATION_JSON_VALUE,
-                objectMapper.writeValueAsBytes(requestData)
-        );
-
-        MvcResult res = mockMvc.perform(multipart("/api/v1/tasks")
-                        .file(imageFile)
-                        .file(data)
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
-                        .header("Authorization", "Bearer " + this.authToken))
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        String responseBody = res.getResponse().getContentAsString();
-        JsonNode jsonNode = objectMapper.readTree(responseBody);
-        this.validTaskId = jsonNode.get("id").asText();
+        createMockTask(mockMvc, objectMapper, categoryRepo, authToken);
     }
 
     @Test
@@ -160,15 +104,15 @@ public class TaskControllerTest {
     @Test
     public void testDeleteTask_TaskIsAlreadyDeleted() throws Exception {
 
-        testCreateTask_ValidTask();
+        UUID taskId = createMockTask(mockMvc, objectMapper, categoryRepo, authToken);
 
-        Task task = taskRepo.findById(UUID.fromString(this.validTaskId)).get();
+        Task task = taskRepo.findById(taskId).get();
         task.setIsDeleted(true);
         taskRepo.save(task);
 
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/api/v1/tasks/" + this.validTaskId)
+                        .delete("/api/v1/tasks/" + taskId)
                         .header("Authorization", "Bearer " + this.authToken)
         ).andExpect(status().isNotFound());
     }
@@ -176,11 +120,11 @@ public class TaskControllerTest {
     @Test
     public void testDeleteTask_TaskToBeDeleted() throws Exception {
 
-        testCreateTask_ValidTask();
+        UUID taskId = createMockTask(mockMvc, objectMapper, categoryRepo, authToken);
 
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/api/v1/tasks/" + this.validTaskId)
+                        .delete("/api/v1/tasks/" + taskId)
                         .header("Authorization", "Bearer " + this.authToken)
         ).andExpect(status().isNoContent());
     }
@@ -205,9 +149,9 @@ public class TaskControllerTest {
     @Test
     public void testCompleteTask_TaskIsDeleted() throws Exception {
 
-        testCreateTask_ValidTask();
+        UUID taskId = createMockTask(mockMvc, objectMapper, categoryRepo, authToken);
 
-        Task task = taskRepo.findById(UUID.fromString(this.validTaskId)).get();
+        Task task = taskRepo.findById(taskId).get();
         task.setIsDeleted(true);
         taskRepo.save(task);
 
@@ -228,10 +172,10 @@ public class TaskControllerTest {
     @Test
     public void testOneTasks_ValidTaskId() throws Exception {
 
-        testCreateTask_ValidTask();
+        UUID taskId = createMockTask(mockMvc, objectMapper, categoryRepo, authToken);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/tasks/" + this.validTaskId)
+                MockMvcRequestBuilders.get("/api/v1/tasks/" + taskId)
         ).andExpect(status().isOk());
     }
 }
