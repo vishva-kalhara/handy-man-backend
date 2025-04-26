@@ -24,7 +24,7 @@ public class TaskOperations {
         return createMockTask(mockMvc, objectMapper, categoryId, authToken);
     }
 
-    public static UUID createMockTask(MockMvc mockMvc, ObjectMapper objectMapper, UUID categoryId, String authToken) throws Exception {
+    public static synchronized UUID createMockTask(MockMvc mockMvc, ObjectMapper objectMapper, UUID categoryId, String authToken) throws Exception {
 
         MockMultipartFile imageFile = new MockMultipartFile(
                 "image", "test.jpg", "image/jpeg", "dummy-image-content".getBytes()

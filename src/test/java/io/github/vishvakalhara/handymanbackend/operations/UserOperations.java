@@ -10,14 +10,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class UserOperations {
 
-    public static String createUserAndGetToken(MockMvc mockMvc, ObjectMapper objectMapper) throws Exception {
+    public static synchronized String createUserAndGetToken(MockMvc mockMvc, ObjectMapper objectMapper) throws Exception {
 
         MvcResult res = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new RegisterRequest(
                                         "Test Display Name",
-                                        "test@example.com",
+                                        "test_" + System.currentTimeMillis() + "@example.com",
                                         "123456"
                                 ))
                         )

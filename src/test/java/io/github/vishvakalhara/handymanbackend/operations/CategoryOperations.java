@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class CategoryOperations {
 
-    public static UUID createMockCategory(CategoryRepo categoryRepo){
+    public static synchronized UUID createMockCategory(CategoryRepo categoryRepo){
         Category category = categoryRepo.save(
                 Category.builder()
                         .categoryName("Test Category")
