@@ -5,23 +5,26 @@ import io.github.vishvakalhara.handymanbackend.domains.dtos.auth.LoginRequest;
 import io.github.vishvakalhara.handymanbackend.domains.dtos.auth.RegisterRequest;
 import io.github.vishvakalhara.handymanbackend.repositories.NotificationRepo;
 import io.github.vishvakalhara.handymanbackend.repositories.UserRepo;
-import org.hamcrest.Matchers;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
-@SpringBootTest
+import static org.hamcrest.Matchers.*;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AuthControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -49,6 +52,11 @@ public class AuthControllerTest {
         this.loginRequestBody = new LoginRequest(validUserEmail, validUserPassword);
     }
 
+    @BeforeEach
+    public void doBeforeEach() {
+        RestAssured.port = port;
+    }
+
     @AfterEach
     public void doAfterEach() {
         notificationRepo.deleteAll();
@@ -58,24 +66,27 @@ public class AuthControllerTest {
     @Test
     public void testRegister_EmptyRequestBody() throws Exception {
 
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/auth/register")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(new RegisterRequest()))
-                )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(new RegisterRequest()))
+                .when()
+                .post("/api/v1/auth/register")
+                .then()
+                .statusCode(400)
+        ;
     }
 
     @Test
     public void testRegister_ValidUser() throws Exception {
 
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/auth/register")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.registerRequestBody))
-                )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value(Matchers.notNullValue()));
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(this.registerRequestBody))
+                .when()
+                .post("/api/v1/auth/register")
+                .then()
+                .statusCode(200)
+                .body("token", notNullValue());
     }
 
     @Test
@@ -83,13 +94,14 @@ public class AuthControllerTest {
 
         testRegister_ValidUser();
 
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/auth/register")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(this.registerRequestBody))
-                )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(Matchers.startsWith("Already there is a user with the same email")));
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(this.registerRequestBody))
+                .when()
+                .post("/api/v1/auth/register")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Already there is a user with the same email"));
     }
 
     @Test
@@ -97,11 +109,14 @@ public class AuthControllerTest {
 
         testRegister_ValidUser();
 
-        mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(this.loginRequestBody))
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(this.loginRequestBody))
+                .when()
+                .post("/api/v1/auth/login")
+                .then()
+                .statusCode(200)
+                .body("token", notNullValue());
     }
 
     @Test
@@ -111,10 +126,12 @@ public class AuthControllerTest {
 
         this.loginRequestBody.setPassword("Wrong Password");
 
-        mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(this.loginRequestBody))
-        ).andExpect(MockMvcResultMatchers.status().isUnauthorized());
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(objectMapper.writeValueAsString(this.loginRequestBody))
+                .when()
+                .post("/api/v1/auth/login")
+                .then()
+                .statusCode(401);
     }
 }
